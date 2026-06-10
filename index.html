@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhargav Srinivasan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────────── */
+    :root {
+      --bg:        #07090f;
+      --surface:   #0e1118;
+      --surface2:  #141822;
+      --border:    #1e2535;
+      --muted:     #3a4d6a;
+      --dim:       #6b85a8;
+      --body:      #b8cde0;
+      --bright:    #e6f0f8;
+      --accent:    #5b9cf6;   /* neural-blue — primary */
+      --accent2:   #4ade91;   /* genome-green — secondary */
+      --warm:      #fb923c;   /* activation-orange — highlight */
+      --purple:    #a78bfa;   /* embedding-purple */
+      --mono:      'JetBrains Mono', monospace;
+      --sans:      'Inter', sans-serif;
+      --r:         8px;
+      --r-lg:      14px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
+
+    /* ─── Nav ─────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 4rem);
+      height: 58px;
+      background: rgba(7, 9, 15, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--bright);
+      letter-spacing: 0.01em;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .nav-logo-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--accent2);
+      animation: softpulse 2.8s ease-in-out infinite;
+    }
+    @keyframes softpulse {
+      0%,100% { opacity: 1; } 50% { opacity: 0.35; }
+    }
+    .nav-links {
+      display: flex; gap: 2rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 400;
+      color: var(--dim);
+      transition: color 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .nav-links a:hover { color: var(--bright); text-decoration: none; }
+
+    /* ─── Layout ─────────────────────────────────────────────── */
+    main { padding-top: 58px; }
+    .section {
+      max-width: 880px;
+      margin: 0 auto;
+      padding: clamp(4rem, 9vw, 6.5rem) clamp(1.5rem, 5vw, 2rem);
+    }
+
+    /* ─── Eyebrow / headings ─────────────────────────────────── */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.9rem;
+      background: rgba(91,156,246,0.08);
+      border: 1px solid rgba(91,156,246,0.18);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+    h2.section-title {
+      font-family: var(--sans);
+      font-size: clamp(1.7rem, 3.5vw, 2.3rem);
+      font-weight: 600;
+      color: var(--bright);
+      margin-bottom: 0.5rem;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .section-sub {
+      color: var(--dim);
+      font-size: 14px;
+      margin-bottom: 2.5rem;
+      max-width: 500px;
+      line-height: 1.6;
+    }
+
+    /* ─── Hero ───────────────────────────────────────────────── */
+    #hero {
+      min-height: calc(100vh - 58px);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+      max-width: 1100px; margin: 0 auto;
+      position: relative;
+    }
+
+    /* biological background — signature element */
+    #bio-bg {
+      position: fixed; top: 0; right: 0; width: 54vw; height: 100vh;
+      pointer-events: none; z-index: 0;
+    }
+    #bio-bg canvas {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    }
+    @keyframes helixDrift { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
+    @keyframes coverageShimmer { 0%,100%{opacity:0.55} 50%{opacity:0.85} }
+    @keyframes basePulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+
+    .hero-inner { position: relative; z-index: 1; max-width: 620px; }
+
+    .hero-status {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--dim);
+      margin-bottom: 1.8rem;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+    .hero-status .live-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--accent2);
+      animation: softpulse 2s infinite;
+    }
+
+    h1 {
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      font-weight: 600;
+      color: var(--bright);
+      line-height: 1.08;
+      margin-bottom: 0.35rem;
+      letter-spacing: -0.03em;
+    }
+    .h1-sub {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      font-weight: 300;
+      color: var(--accent);
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      font-family: var(--mono);
+    }
+
+    .hero-desc {
+      font-size: 15px;
+      color: var(--body);
+      max-width: 520px;
+      margin-bottom: 2rem;
+      line-height: 1.75;
+    }
+    .hero-desc em { color: var(--accent2); font-style: normal; font-weight: 500; }
+
+    .hero-chips {
+      display: flex; flex-wrap: wrap; gap: 0.45rem;
+      margin-bottom: 2.2rem;
+    }
+    .chip {
+      font-size: 12px;
+      padding: 4px 12px;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--dim);
+      background: var(--surface);
+      transition: all 0.18s;
+      cursor: default;
+    }
+    .chip:hover { border-color: var(--accent); color: var(--accent); }
+    .chip.hl { border-color: rgba(91,156,246,0.35); color: var(--accent); background: rgba(91,156,246,0.07); }
+
+    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+    .btn {
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 20px;
+      border-radius: var(--r);
+      border: 1.5px solid var(--accent);
+      color: var(--accent);
+      background: transparent;
+      cursor: pointer;
+      transition: all 0.18s;
+      display: inline-block;
+    }
+    .btn:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
+    .btn.ghost { border-color: var(--border); color: var(--dim); }
+    .btn.ghost:hover { border-color: var(--dim); color: var(--body); background: transparent; }
+
+    /* ─── Divider ────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); max-width: 880px; margin: 0 auto; }
+
+    /* ─── Research cards ─────────────────────────────────────── */
+    .research-grid { display: flex; flex-direction: column; gap: 12px; }
+
+    .rcard {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      overflow: hidden;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .rcard:hover { border-color: var(--muted); }
+    .rcard.open { border-color: rgba(91,156,246,0.3); background: var(--surface2); }
+
+    .rcard-header {
+      display: flex; align-items: stretch;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* colored left-bar per category */
+    .rcard-bar { width: 4px; flex-shrink: 0; background: var(--muted); border-radius: 0; transition: background 0.2s; }
+    .rcard:hover .rcard-bar, .rcard.open .rcard-bar { background: var(--accent); }
+    .rcard-bar.green { background: var(--accent2); }
+    .rcard-bar.orange { background: var(--warm); }
+    .rcard-bar.purple { background: var(--purple); }
+    .rcard:hover .rcard-bar.green, .rcard.open .rcard-bar.green { background: var(--accent2); }
+    .rcard:hover .rcard-bar.orange, .rcard.open .rcard-bar.orange { background: var(--warm); }
+    .rcard:hover .rcard-bar.purple, .rcard.open .rcard-bar.purple { background: var(--purple); }
+
+    .rcard-top {
+      flex: 1; padding: 1.1rem 1.4rem;
+      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    }
+    .rcard-left { flex: 1; min-width: 0; }
+    .rcard-category {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.3rem;
+    }
+    .rcard-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--bright);
+      line-height: 1.35;
+    }
+    .rcard-org {
+      font-size: 12.5px;
+      color: var(--dim);
+      margin-top: 0.2rem;
+    }
+    .rcard-right {
+      display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0;
+    }
+    .rcard-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .rcard-chevron {
+      font-size: 18px; color: var(--muted);
+      transition: transform 0.25s, color 0.2s;
+      line-height: 1;
+    }
+    .rcard.open .rcard-chevron { transform: rotate(180deg); color: var(--accent); }
+
+    /* badge */
+    .badge {
+      font-size: 10px; font-family: var(--mono);
+      padding: 2px 8px; border-radius: 20px; white-space: nowrap;
+    }
+    .badge.active   { background: rgba(74,222,145,0.1); color: #4ade91; border: 1px solid rgba(74,222,145,0.22); }
+    .badge.intern   { background: rgba(251,146,60,0.1); color: var(--warm); border: 1px solid rgba(251,146,60,0.22); }
+    .badge.new      { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.24); }
+
+    /* expanded body */
+    .rcard-body {
+      display: none;
+      padding: 0 1.4rem 1.4rem 1.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .rcard.open .rcard-body { display: block; }
+
+    .rcard-desc {
+      font-size: 14px; color: var(--body);
+      line-height: 1.75; margin: 1rem 0 1.25rem; max-width: 660px;
+    }
+    .rcard-visual {
+      width: 100%; min-height: 150px;
+      border: 1px dashed var(--border);
+      border-radius: var(--r);
+      background: var(--bg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      margin-bottom: 1.1rem;
+    }
+
+    .rcard-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
+    .tool-chip {
+      font-family: var(--mono); font-size: 10.5px;
+      padding: 3px 8px; border: 1px solid var(--border);
+      border-radius: 4px; color: var(--muted); background: var(--bg);
+    }
+    .rcard-links { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .rcard-links a {
+      font-size: 12px; font-family: var(--mono);
+      color: var(--accent); display: flex; align-items: center; gap: 4px;
+      transition: color 0.15s;
+    }
+    .rcard-links a:hover { color: var(--bright); text-decoration: none; }
+    .rcard-links a::before { content: '↗ '; font-size: 9px; opacity: 0.6; }
+
+    /* ─── Category filter bar ────────────────────────────────── */
+    .filter-bar {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .fchip {
+      font-size: 12px; padding: 5px 14px;
+      border: 1px solid var(--border); border-radius: 20px;
+      color: var(--dim); background: var(--surface);
+      cursor: pointer; transition: all 0.18s;
+    }
+    .fchip:hover, .fchip.active { border-color: var(--accent); color: var(--accent); background: rgba(91,156,246,0.07); }
+
+    /* ─── Publications ───────────────────────────────────────── */
+    .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+    .pub-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 1.2rem 1.5rem;
+      transition: border-color 0.2s;
+      display: flex; gap: 1.25rem; align-items: flex-start;
+    }
+    .pub-item:hover { border-color: var(--muted); }
+    .pub-year {
+      font-family: var(--mono); font-size: 11px; color: var(--muted);
+      padding-top: 3px; flex-shrink: 0; width: 34px; text-align: right;
+    }
+    .pub-content { flex: 1; }
+    .pub-venue {
+      font-family: var(--mono); font-size: 10px;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.3rem;
+    }
+    .pub-title {
+      font-size: 14px; font-weight: 500;
+      color: var(--bright); margin-bottom: 0.3rem; line-height: 1.4;
+    }
+    .pub-authors { font-size: 12px; color: var(--dim); margin-bottom: 0.4rem; }
+    .pub-authors strong { color: var(--body); }
+    .pub-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+    .pub-award {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 10px; color: var(--warm); font-family: var(--mono);
+      background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.2);
+      padding: 2px 7px; border-radius: 4px; margin-top: 5px;
+    }
+
+    /* ─── About terminal ─────────────────────────────────────── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
+
+    .terminal {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); overflow: hidden; grid-column: span 2;
+    }
+    @media (max-width: 600px) { .terminal { grid-column: span 1; } }
+    .terminal-bar {
+      background: var(--surface2); padding: 8px 14px;
+      display: flex; align-items: center; gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .td { width: 10px; height: 10px; border-radius: 50%; }
+    .td-r { background: #ff5f57; } .td-y { background: #febc2e; } .td-g { background: #28c840; }
+    .terminal-title { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: 6px; }
+    .terminal-body {
+      padding: 1.3rem 1.5rem;
+      font-family: var(--mono); font-size: 12.5px; line-height: 1.95;
+    }
+    .t-p { color: var(--accent2); } .t-cmd { color: var(--bright); }
+    .t-key { color: var(--accent); } .t-val { color: var(--body); }
+    .t-c { color: var(--muted); }
+    .cursor {
+      display: inline-block; width: 7px; height: 13px;
+      background: var(--accent2); vertical-align: middle;
+      animation: blink 1.1s step-end infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .stat-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 1.25rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .stat-card:hover { border-color: var(--muted); }
+    .stat-num {
+      font-family: var(--mono); font-size: 2rem; font-weight: 600;
+      color: var(--bright); line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+    .stat-num span { color: var(--accent); }
+    .stat-label { font-size: 12.5px; color: var(--dim); }
+
+    /* ─── Neural net SVG ─────────────────────────────────────── */
+    /* drawn with JS below */
+
+    /* ─── Footer ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem clamp(1.5rem, 5vw, 4rem);
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem; max-width: 1100px; margin: 0 auto;
+    }
+    .footer-left { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
+    .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
+    .footer-links a:hover { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 640px) {
+      .nav-links { gap: 1.1rem; }
+      .rcard-top { flex-direction: column; align-items: flex-start; }
+      .rcard-right { flex-direction: row; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- biological background -->
+<div id="bio-bg" aria-hidden="true">
+  <svg id="bio-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%">
+    <defs>
+      <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#07090f" stop-opacity="1"/>
+        <stop offset="40%" stop-color="#07090f" stop-opacity="0"/>
+      </linearGradient>
+      <linearGradient id="fadeTop" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#07090f" stop-opacity="0.7"/>
+        <stop offset="20%" stop-color="#07090f" stop-opacity="0"/>
+        <stop offset="80%" stop-color="#07090f" stop-opacity="0"/>
+        <stop offset="100%" stop-color="#07090f" stop-opacity="0.8"/>
+      </linearGradient>
+    </defs>
+    <!-- drawn by JS below -->
+    <g id="helix-group" style="animation: helixDrift 8s ease-in-out infinite"></g>
+    <g id="coverage-group"></g>
+    <g id="chrom-group"></g>
+    <!-- fade overlays keep edges clean -->
+    <rect width="100%" height="100%" fill="url(#fadeLeft)"/>
+    <rect width="100%" height="100%" fill="url(#fadeTop)"/>
+  </svg>
+</div>
+
+<!-- ─── Nav ────────────────────────────────────────────────── -->
+<nav>
+  <div class="nav-logo">
+    <div class="nav-logo-dot"></div>
+    Bhargav Srinivasan
+  </div>
+  <ul class="nav-links">
+    <li><a href="#research">Research</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="mailto:bds062@umd.edu">Contact</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ─── Hero ──────────────────────────────────────────────── -->
+  <section id="hero">
+    <div class="hero-inner">
+
+      <div class="hero-status">
+        <div class="live-dot"></div>
+        UMD College Park · B.S. CS + Biological Sciences · Expected May 2027
+      </div>
+
+      <h1>Bhargav Srinivasan</h1>
+      <div class="h1-sub">deep learning × genomics</div>
+
+      <p class="hero-desc">
+        I build deep learning tools that read biological sequences the way transformers read language.
+        My work spans <em>copy number variation in insect genomes</em>,
+        <em>structural variant detection in cancer</em>, and
+        <em>host–pathogen evolutionary dynamics</em> — always with a pipeline running somewhere on an HPC cluster.
+      </p>
+
+      <div class="hero-chips">
+        <span class="chip hl">Deep Learning for Genomics</span>
+        <span class="chip hl">Structural Variation</span>
+        <span class="chip hl">Copy Number Variation</span>
+        <span class="chip">WGS Pipelines</span>
+        <span class="chip">Transformer Models</span>
+        <span class="chip">Cancer Genomics</span>
+        <span class="chip">ODE Modeling</span>
+        <span class="chip">HPC / SLURM</span>
+      </div>
+
+      <div class="hero-ctas">
+        <a class="btn" href="#research">View Research</a>
+        <a class="btn ghost" href="https://github.com/bds062" target="_blank">GitHub</a>
+        <a class="btn ghost" href="https://linkedin.com/in/bhargavdsrinivasan" target="_blank">LinkedIn</a>
+        <a class="btn ghost" href="mailto:bds062@umd.edu">Email</a>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ─── Research ──────────────────────────────────────────── -->
+  <section class="section" id="research">
+    <p class="eyebrow">Research & Experience</p>
+    <h2 class="section-title">What I've been building</h2>
+    <p class="section-sub">Click any card for details, tools, and links.</p>
+
+    <div class="filter-bar" id="filterBar">
+      <span class="fchip active" data-cat="all">All</span>
+      <span class="fchip" data-cat="dl">Deep Learning</span>
+      <span class="fchip" data-cat="genomics">Genomics</span>
+      <span class="fchip" data-cat="math">Mathematical Biology</span>
+      <span class="fchip" data-cat="industry">Industry</span>
+    </div>
+
+    <div class="research-grid" id="researchGrid">
+
+      <!-- ── Kolmogorov Lab (new, DL + cancer) ─────────────── -->
+      <div class="rcard" data-cats="dl genomics industry">
+        <div class="rcard-header">
+          <div class="rcard-bar purple"></div>
+          <div class="rcard-top">
+            <div class="rcard-left">
+              <div class="rcard-category">Research Intern · Kolmogorov Lab</div>
+              <div class="rcard-title">Deep Learning for Complex Structural Variation in Cancer Genomes</div>
+              <div class="rcard-org">Long-read WGS · somatic SV detection · cancer genomics</div>
+            </div>
+            <div class="rcard-right">
+              <span class="badge new">Summer 2025</span>
+              <span class="rcard-date">May 2025 – Present</span>
+              <span class="rcard-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard-body">
+          <p class="rcard-desc">
+            Building a deep learning model to identify complex structural variants (SVs) in cancer genomes —
+            the rearrangements, inversions, and copy-number events that drive tumor evolution but evade
+            short-read callers. Working with long-read whole-genome sequencing data to train a model
+            that can parse the ambiguous, multi-breakpoint signatures that define complex SVs.
+            This project sits right at the intersection of my interests: sequence-level deep learning,
+            clinical genomics, and the computational challenge of reading through noisy long reads.
+          </p>
+          <div class="rcard-visual" id="vis-kol">
+            <span>[ model architecture or SV example figure — add here ]</span>
+          </div>
+          <div class="rcard-tools">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">PyTorch</span>
+            <span class="tool-chip">Long-read WGS</span>
+            <span class="tool-chip">Structural Variants</span>
+            <span class="tool-chip">Cancer Genomics</span>
+            <span class="tool-chip">SLURM / HPC</span>
+          </div>
+          <div class="rcard-links">
+            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── CNV Tool ───────────────────────────────────────── -->
+      <div class="rcard" data-cats="dl genomics">
+        <div class="rcard-header">
+          <div class="rcard-bar green"></div>
+          <div class="rcard-top">
+            <div class="rcard-left">
+              <div class="rcard-category">Computational Genomics · Fritz Lab, UMD</div>
+              <div class="rcard-title">CNV Identification in <em>Helicoverpa zea</em></div>
+              <div class="rcard-org">Bt pesticide resistance · 237 wild WGS samples</div>
+            </div>
+            <div class="rcard-right">
+              <span class="badge active">Active</span>
+              <span class="rcard-date">Feb 2024 – Present</span>
+              <span class="rcard-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard-body">
+          <p class="rcard-desc">
+            Analyzing 237 whole-genome sequenced wild <em>H. zea</em> samples to understand how copy number
+            variation drives adaptive resistance to Bt pesticides — a major agricultural challenge.
+            I'm building a CNV identification tool specifically designed for archived short-read data from
+            non-model organisms, where reference genomes are messy and read depths are uneven.
+            The project gave me a deep appreciation for how noisy real-world genomic data is, and what it
+            takes to extract signal from it.
+            Presented at PAG 2026, winning 2nd Prize in the CSSA Poster Competition.
+          </p>
+          <div class="rcard-visual" id="vis-cnv">
+            <span>[ read depth × copy number visualization — add here ]</span>
+          </div>
+          <div class="rcard-tools">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">Bash</span>
+            <span class="tool-chip">Rust</span>
+            <span class="tool-chip">Bowtie2</span>
+            <span class="tool-chip">Samtools</span>
+            <span class="tool-chip">VCFtools</span>
+            <span class="tool-chip">SLURM</span>
+          </div>
+          <div class="rcard-links">
+            <a href="#" onclick="return false;">Poster PDF</a>
+            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AstraZeneca ────────────────────────────────────── -->
+      <div class="rcard" data-cats="genomics industry">
+        <div class="rcard-header">
+          <div class="rcard-bar orange"></div>
+          <div class="rcard-top">
+            <div class="rcard-left">
+              <div class="rcard-category">Bioinformatics Intern · AstraZeneca</div>
+              <div class="rcard-title">Bacterial Genome Surveillance Pipeline & Dashboard</div>
+              <div class="rcard-org">Early Vaccines & Immune Therapies · molecular surveillance · PowerBI</div>
+            </div>
+            <div class="rcard-right">
+              <span class="badge intern">Internship</span>
+              <span class="rcard-date">May – Aug 2025</span>
+              <span class="rcard-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard-body">
+          <p class="rcard-desc">
+            Spent a summer building infrastructure for genomic surveillance at AstraZeneca's vaccine division.
+            I engineered a bacterial genome-processing pipeline for real-time strain tracking,
+            built a PowerBI dashboard that brought genomic insights to clinical and wet-lab teams without
+            requiring them to run a single script, and prototyped a structural surveillance system to
+            flag high-risk bacterial strains. It was a great lesson in making computational biology
+            accessible across an organization.
+          </p>
+          <div class="rcard-visual" id="vis-az">
+            <span>[ pipeline schematic or dashboard screenshot — add here ]</span>
+          </div>
+          <div class="rcard-tools">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">PowerBI</span>
+            <span class="tool-chip">Bash</span>
+            <span class="tool-chip">Genome Assembly</span>
+            <span class="tool-chip">Structural Bioinformatics</span>
+          </div>
+          <div class="rcard-links">
+            <a href="#publications">ASM Microbe 2026 Abstract</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Host–Pathogen ODE ──────────────────────────────── -->
+      <div class="rcard" data-cats="math">
+        <div class="rcard-header">
+          <div class="rcard-bar"></div>
+          <div class="rcard-top">
+            <div class="rcard-left">
+              <div class="rcard-category">Mathematical Biology · Bruns Lab, UMD</div>
+              <div class="rcard-title">Host–Pathogen Coevolution ODE Model</div>
+              <div class="rcard-org">Temporal adaptation, allelic variation & seasonal forcing</div>
+            </div>
+            <div class="rcard-right">
+              <span class="badge active">Active</span>
+              <span class="rcard-date">Jan 2024 – Present</span>
+              <span class="rcard-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard-body">
+          <p class="rcard-desc">
+            Building a deterministic ODE system to model how hosts and pathogens coevolve over time —
+            incorporating allelic variation, seasonal forcing, and birth pulses that make real-world
+            infection dynamics so hard to predict. The model lets us ask "when should a pathogen strike?"
+            and produces testable predictions for lab and field experiments.
+            I was invited as the only undergraduate to present at the QEED Seminar, to an audience of
+            30+ graduate students and faculty.
+          </p>
+          <div class="rcard-visual" id="vis-ode">
+            <span>[ phase portrait or time-series simulation — add here ]</span>
+          </div>
+          <div class="rcard-tools">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">NumPy</span>
+            <span class="tool-chip">SciPy</span>
+            <span class="tool-chip">Matplotlib</span>
+            <span class="tool-chip">ODE Solvers</span>
+          </div>
+          <div class="rcard-links">
+            <a href="#publications">EEID NE 2025 Poster</a>
+            <a href="#publications">QEED Talk (Apr 2025)</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Cichlid CV ─────────────────────────────────────── -->
+      <div class="rcard" data-cats="dl">
+        <div class="rcard-header">
+          <div class="rcard-bar"></div>
+          <div class="rcard-top">
+            <div class="rcard-left">
+              <div class="rcard-category">Computer Vision · Gemstone Team FSH, UMD</div>
+              <div class="rcard-title">Social Behavior Classification in Lake Malawi Cichlids</div>
+              <div class="rcard-org">Few-shot deep learning · PI: Abhinav Shrivastava</div>
+            </div>
+            <div class="rcard-right">
+              <span class="badge active">Active</span>
+              <span class="rcard-date">Aug 2023 – Present</span>
+              <span class="rcard-chevron">▾</span>
+            </div>
+          </div>
+        </div>
+        <div class="rcard-body">
+          <p class="rcard-desc">
+            Building a few-shot classification framework to identify the social behaviors of Lake Malawi
+            Cichlids from video — a genuinely hard recognition problem because the fish look similar
+            and behavior labels are expensive to annotate. I lead a team of 11 students and serve as
+            the main point of contact between our team and PI Abhinav Shrivastava.
+            It's taught me as much about research teamwork as it has about computer vision.
+          </p>
+          <div class="rcard-visual" id="vis-cichlid">
+            <span>[ behavior detection frame or model diagram — add here ]</span>
+          </div>
+          <div class="rcard-tools">
+            <span class="tool-chip">Python</span>
+            <span class="tool-chip">PyTorch</span>
+            <span class="tool-chip">Few-Shot Learning</span>
+            <span class="tool-chip">Computer Vision</span>
+            <span class="tool-chip">OpenCV</span>
+          </div>
+          <div class="rcard-links">
+            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /research-grid -->
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ─── Publications ──────────────────────────────────────── -->
+  <section class="section" id="publications">
+    <p class="eyebrow">Publications & Presentations</p>
+    <h2 class="section-title">Select work</h2>
+    <p class="section-sub">Conferences, posters, and editorial work — 2024 to present.</p>
+
+    <div class="pub-list">
+
+      <div class="pub-item">
+        <div class="pub-year">2026</div>
+        <div class="pub-content">
+          <div class="pub-venue">ASM Microbe 2026 · Washington, D.C.</div>
+          <div class="pub-title">A machine learning approach to identify unique NTHi clusters using LOS biosynthetic genes</div>
+          <div class="pub-authors">Gopalakrishnan V., Godfrey V., <strong>Srinivasan B.</strong>, et al.</div>
+          <div class="pub-meta">Non-presenting co-author · National conference · 4800+ attendees</div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2026</div>
+        <div class="pub-content">
+          <div class="pub-venue">Plant & Animal Genome Conference · San Diego, CA</div>
+          <div class="pub-title">Correlations between Read Depth, Copy Number Variation, and Bt Resistance in <em>Helicoverpa zea</em></div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Fritz M.</div>
+          <div class="pub-meta">Poster · International conference · 3200+ attendees</div>
+          <div class="pub-award">🏆 2nd Prize — CSSA Poster Competition (only undergraduate)</div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div class="pub-content">
+          <div class="pub-venue">EEID NE Meeting · University Park, PA</div>
+          <div class="pub-title">When should a pathogen strike: navigating the landscape of birth pulses and mating season</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
+          <div class="pub-meta">Poster · Regional conference · 75+ attendees</div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div class="pub-content">
+          <div class="pub-venue">AstraZeneca VIT Intern Symposium · Gaithersburg, MD</div>
+          <div class="pub-title">Developing a Molecular Surveillance Dashboard</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Mahool K.</div>
+          <div class="pub-meta">Poster presentation</div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2025</div>
+        <div class="pub-content">
+          <div class="pub-venue">QEED Seminar · College Park, MD</div>
+          <div class="pub-title">Host Life History vs Pathogen Optimization</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
+          <div class="pub-meta">Oral presentation · Only undergraduate speaker in seminar history · 30+ grad students & faculty</div>
+        </div>
+      </div>
+
+      <div class="pub-item">
+        <div class="pub-year">2024</div>
+        <div class="pub-content">
+          <div class="pub-venue">Pain Management Journal · Sep 2024</div>
+          <div class="pub-title">Artificial intelligence and pain management: cautiously optimistic</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Venkataraman A., Raja S.N.</div>
+          <div class="pub-meta">Editorial · <em>Pain Management</em></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ─── About ─────────────────────────────────────────────── -->
+  <section class="section" id="about">
+    <p class="eyebrow">About</p>
+    <h2 class="section-title">A bit about me</h2>
+    <p class="section-sub">I'm applying to PhD programs in computational biology and genomics for Fall 2026.</p>
+
+    <div class="about-grid">
+
+      <div class="stat-card">
+        <div class="stat-num">3<span>.8</span></div>
+        <div class="stat-label">GPA · UMD College Park</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-num">6<span>+</span></div>
+        <div class="stat-label">Presentations & publications</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-num">237</div>
+        <div class="stat-label">WGS samples in active analysis</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-num">2<span>nd</span></div>
+        <div class="stat-label">CSSA Poster Prize at PAG 2026</div>
+      </div>
+
+      <div class="terminal">
+        <div class="terminal-bar">
+          <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
+          <span class="terminal-title">bhargav@umd — profile.json</span>
+        </div>
+        <div class="terminal-body">
+          <div><span class="t-p">❯</span> <span class="t-cmd">cat profile.json</span></div>
+          <br>
+          <div><span class="t-c">{</span></div>
+          <div>&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-val">"Bhargav Srinivasan"</span>,</div>
+          <div>&nbsp;&nbsp;<span class="t-key">"focus"</span>: <span class="t-val">"deep learning × computational genomics"</span>,</div>
+          <div>&nbsp;&nbsp;<span class="t-key">"degrees"</span>: <span class="t-val">["B.S. CS", "B.S. Biological Sciences"]</span>,</div>
+          <div>&nbsp;&nbsp;<span class="t-key">"programs"</span>: <span class="t-val">["Gemstone Honors", "Entomology Departmental Honors"]</span>,</div>
+          <div>&nbsp;&nbsp;<span class="t-key">"applying_for"</span>: <span class="t-val">"PhD in Computational Biology / Genomics"</span>,</div>
+          <div>&nbsp;&nbsp;<span class="t-key">"contact"</span>: <span class="t-val">"bds062@umd.edu"</span></div>
+          <div><span class="t-c">}</span></div>
+          <br>
+          <div><span class="t-p">❯</span> <span class="cursor"></span></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="footer-left">© 2026 Bhargav Srinivasan · bds062@umd.edu</div>
+  <ul class="footer-links">
+    <li><a href="https://github.com/bds062" target="_blank">GitHub</a></li>
+    <li><a href="https://linkedin.com/in/bhargavdsrinivasan" target="_blank">LinkedIn</a></li>
+    <li><a href="mailto:bds062@umd.edu">Email</a></li>
+  </ul>
+</footer>
+
+<script>
+/* ── Biological background ── */
+(function() {
+  const NS = 'http://www.w3.org/2000/svg';
+  const svg = document.getElementById('bio-svg');
+  const helixG = document.getElementById('helix-group');
+  const covG = document.getElementById('coverage-group');
+  const chromG = document.getElementById('chrom-group');
+
+  const BASE_COLORS = { A:'#4ade91', T:'#5b9cf6', G:'#fb923c', C:'#a78bfa' };
+  const COMPLEMENT  = { A:'T', T:'A', G:'C', C:'G' };
+  const BASES = ['A','T','G','C'];
+
+  function el(tag, attrs) {
+    const e = document.createElementNS(NS, tag);
+    for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
+    return e;
+  }
+  function txt(str, attrs) {
+    const e = el('text', attrs);
+    e.textContent = str;
+    return e;
+  }
+
+  /* ── 1. DNA double helix (upper-right) ── */
+  function drawHelix(ox, oy, w, h) {
+    const rows = 28;
+    const rowH = h / rows;
+    const cx = ox + w * 0.5;
+    const amp = w * 0.38;
+
+    for (let i = 0; i < rows; i++) {
+      const t = i / (rows - 1);
+      const angle = t * Math.PI * 5;
+      const x1 = cx + Math.sin(angle) * amp;
+      const x2 = cx - Math.sin(angle) * amp;
+      const y  = oy + i * rowH;
+      const b1 = BASES[Math.floor(Math.random() * 4)];
+      const b2 = COMPLEMENT[b1];
+      const depthAlpha = (0.5 + 0.5 * Math.sin(angle)) * 0.9;
+      const pairAlpha  = (0.3 + 0.3 * Math.abs(Math.cos(angle)));
+
+      // backbone node 1
+      const c1 = el('circle', { cx: x1, cy: y, r: 4.5,
+        fill: BASE_COLORS[b1], opacity: (depthAlpha * 0.85).toFixed(2) });
+      helixG.appendChild(c1);
+
+      // backbone node 2
+      const c2 = el('circle', { cx: x2, cy: y, r: 4.5,
+        fill: BASE_COLORS[b2], opacity: ((1-depthAlpha) * 0.85).toFixed(2) });
+      helixG.appendChild(c2);
+
+      // hydrogen bond line
+      const bond = el('line', { x1: x1, y1: y, x2: x2, y2: y,
+        stroke: '#3a4d6a', 'stroke-width': 0.8, opacity: pairAlpha.toFixed(2) });
+      helixG.appendChild(bond);
+
+      // base letter labels (every 3rd)
+      if (i % 3 === 0) {
+        const lbl1 = txt(b1, { x: x1, y: y + 1, 'text-anchor':'middle',
+          'dominant-baseline':'central', 'font-size': '7', 'font-family':'monospace',
+          fill: '#0b0f0e', opacity: (depthAlpha * 0.85).toFixed(2) });
+        helixG.appendChild(lbl1);
+        const lbl2 = txt(b2, { x: x2, y: y + 1, 'text-anchor':'middle',
+          'dominant-baseline':'central', 'font-size': '7', 'font-family':'monospace',
+          fill: '#0b0f0e', opacity: ((1-depthAlpha) * 0.85).toFixed(2) });
+        helixG.appendChild(lbl2);
+      }
+
+      // backbone strand curve (connect adjacent nodes)
+      if (i > 0) {
+        const prevAngle = (i-1) / (rows-1) * Math.PI * 5;
+        const px1 = cx + Math.sin(prevAngle) * amp;
+        const px2 = cx - Math.sin(prevAngle) * amp;
+        const py  = oy + (i-1) * rowH;
+        const s1 = el('line', { x1: px1, y1: py, x2: x1, y2: y,
+          stroke: '#1e2535', 'stroke-width': 1.5, opacity: 0.6 });
+        const s2 = el('line', { x1: px2, y1: py, x2: x2, y2: y,
+          stroke: '#1e2535', 'stroke-width': 1.5, opacity: 0.6 });
+        helixG.prepend(s1);
+        helixG.prepend(s2);
+      }
+    }
+  }
+
+  /* ── 2. Coverage track (mid-right, like a WGS read-depth plot) ── */
+  function drawCoverage(ox, oy, w, h) {
+    const bins = 90;
+    const binW = w / bins;
+    const seed = 42;
+    // simulate realistic coverage: baseline + some peaks (CNV regions)
+    function coverage(i) {
+      const base = 32 + 8 * Math.sin(i * 0.18) + 6 * Math.sin(i * 0.07);
+      const peak1 = i > 22 && i < 32 ? 24 : 0;    // simulated CNV gain
+      const peak2 = i > 55 && i < 62 ? -18 : 0;   // simulated CNV loss
+      const noise = (Math.sin(i * 137.5) * 0.5 + Math.sin(i * 37.1) * 0.3) * 6;
+      return Math.max(4, base + peak1 + peak2 + noise);
+    }
+    const maxCov = 70;
+
+    // axis line
+    covG.appendChild(el('line', { x1: ox, y1: oy + h, x2: ox + w, y2: oy + h,
+      stroke: '#1e2535', 'stroke-width': 0.8 }));
+
+    // y-axis ticks
+    for (const depth of [20, 40, 60]) {
+      const ty = oy + h - (depth / maxCov) * h;
+      covG.appendChild(el('line', { x1: ox - 5, y1: ty, x2: ox, y2: ty,
+        stroke: '#3a4d6a', 'stroke-width': 0.6 }));
+      covG.appendChild(txt(depth+'×', { x: ox - 8, y: ty, 'text-anchor':'end',
+        'dominant-baseline':'central', 'font-size': '8', 'font-family':'monospace',
+        fill: '#3a4d6a' }));
+    }
+
+    // label
+    covG.appendChild(txt('read depth', { x: ox + w * 0.5, y: oy - 10,
+      'text-anchor':'middle', 'font-size': '9', 'font-family':'monospace', fill: '#3a4d6a' }));
+    covG.appendChild(txt('chr3: 48.2 Mb – 48.5 Mb', { x: ox + w * 0.5, y: oy - 22,
+      'text-anchor':'middle', 'font-size': '8', 'font-family':'monospace', fill: '#2a3c50' }));
+
+    // bars
+    for (let i = 0; i < bins; i++) {
+      const cov = coverage(i);
+      const barH = Math.min((cov / maxCov) * h, h);
+      const bx = ox + i * binW;
+      const by = oy + h - barH;
+      // color: CNV gain = green, loss = orange, normal = blue
+      let fill;
+      if (i > 22 && i < 32) fill = '#4ade91';
+      else if (i > 55 && i < 62) fill = '#fb923c';
+      else fill = '#5b9cf6';
+      const anim = (0.35 + Math.abs(Math.sin(i * 0.4)) * 0.35).toFixed(2);
+      covG.appendChild(el('rect', { x: bx, y: by, width: Math.max(binW - 0.8, 1), height: barH,
+        fill, opacity: anim, rx: 0.5 }));
+    }
+
+    // CNV region annotation boxes
+    const cnvGainX = ox + 22 * binW;
+    const cnvGainW = 10 * binW;
+    covG.appendChild(el('rect', { x: cnvGainX, y: oy - 4, width: cnvGainW, height: h + 4,
+      fill: 'none', stroke: '#4ade91', 'stroke-width': 0.8, 'stroke-dasharray': '3 2',
+      opacity: 0.45, rx: 1 }));
+    covG.appendChild(txt('CNV gain', { x: cnvGainX + cnvGainW * 0.5, y: oy + h + 12,
+      'text-anchor':'middle', 'font-size': '8', 'font-family':'monospace', fill: '#4ade91', opacity: 0.7 }));
+
+    const cnvLossX = ox + 55 * binW;
+    const cnvLossW = 7 * binW;
+    covG.appendChild(el('rect', { x: cnvLossX, y: oy - 4, width: cnvLossW, height: h + 4,
+      fill: 'none', stroke: '#fb923c', 'stroke-width': 0.8, 'stroke-dasharray': '3 2',
+      opacity: 0.45, rx: 1 }));
+    covG.appendChild(txt('CNV loss', { x: cnvLossX + cnvLossW * 0.5, y: oy + h + 12,
+      'text-anchor':'middle', 'font-size': '8', 'font-family':'monospace', fill: '#fb923c', opacity: 0.7 }));
+  }
+
+  /* ── 3. Chromosome ideogram (lower area) ── */
+  function drawChromosome(ox, oy, w, h) {
+    const bands = [
+      { start:0,    end:0.07, type:'dark'   },
+      { start:0.07, end:0.13, type:'light'  },
+      { start:0.13, end:0.19, type:'dark'   },
+      { start:0.19, end:0.27, type:'light'  },
+      { start:0.27, end:0.34, type:'stalk'  }, // centromere
+      { start:0.34, end:0.41, type:'stalk'  },
+      { start:0.41, end:0.50, type:'dark'   },
+      { start:0.50, end:0.58, type:'light'  },
+      { start:0.58, end:0.65, type:'dark'   },
+      { start:0.65, end:0.73, type:'highlight' }, // region of interest
+      { start:0.73, end:0.82, type:'light'  },
+      { start:0.82, end:0.90, type:'dark'   },
+      { start:0.90, end:1.00, type:'light'  },
+    ];
+    const bandColors = {
+      dark:      '#1e2535',
+      light:     '#141822',
+      stalk:     '#3a4d6a',
+      highlight: '#5b9cf6',
+    };
+    const bandOpacity = { dark:0.9, light:0.5, stalk:0.8, highlight:0.7 };
+
+    chromG.appendChild(txt('chr3 (Helicoverpa zea)', { x: ox + w * 0.5, y: oy - 10,
+      'text-anchor':'middle', 'font-size': '9', 'font-family':'monospace', fill: '#3a4d6a' }));
+
+    // chromosome body with rounded ends
+    const chromH = h * 0.55;
+    const cy = oy + (h - chromH) * 0.5;
+    chromG.appendChild(el('rect', { x: ox, y: cy, width: w, height: chromH,
+      rx: chromH * 0.5, fill: '#0e1118', stroke: '#1e2535', 'stroke-width': 0.8 }));
+
+    // bands (clipped to rounded rect via rx approximation — inset bands)
+    const inset = chromH * 0.5;
+    const insetW = w - inset * 2;
+    for (const band of bands) {
+      const bx = ox + inset + band.start * insetW;
+      const bw = (band.end - band.start) * insetW;
+      const col = bandColors[band.type];
+      const op  = bandOpacity[band.type];
+      chromG.appendChild(el('rect', { x: bx, y: cy + 1, width: bw - 0.5, height: chromH - 2,
+        fill: col, opacity: op }));
+    }
+
+    // region of interest pointer
+    const roiX = ox + inset + 0.65 * insetW + (0.73 - 0.65) * insetW * 0.5;
+    chromG.appendChild(el('line', { x1: roiX, y1: cy, x2: roiX, y2: oy - 18,
+      stroke: '#5b9cf6', 'stroke-width': 0.8, 'stroke-dasharray': '3 2', opacity: 0.6 }));
+    chromG.appendChild(txt('region of interest', { x: roiX + 4, y: oy - 22,
+      'font-size': '8', 'font-family':'monospace', fill: '#5b9cf6', opacity: 0.7 }));
+
+    // p/q arm labels
+    chromG.appendChild(txt('p', { x: ox + inset * 0.6, y: oy + h * 0.5,
+      'text-anchor':'middle', 'dominant-baseline':'central',
+      'font-size': '9', 'font-family':'monospace', fill: '#3a4d6a' }));
+    chromG.appendChild(txt('q', { x: ox + w - inset * 0.6, y: oy + h * 0.5,
+      'text-anchor':'middle', 'dominant-baseline':'central',
+      'font-size': '9', 'font-family':'monospace', fill: '#3a4d6a' }));
+  }
+
+  /* ── Layout & draw ── */
+  function render() {
+    const vW = svg.clientWidth || window.innerWidth * 0.54;
+    const vH = svg.clientHeight || window.innerHeight;
+    svg.setAttribute('viewBox', `0 0 ${vW} ${vH}`);
+
+    // clear dynamic groups
+    helixG.innerHTML = '';
+    covG.innerHTML = '';
+    chromG.innerHTML = '';
+
+    const margin = vW * 0.08;
+
+    // helix: upper portion, right-of-center
+    const helixX = vW * 0.42;
+    const helixW = vW * 0.42;
+    drawHelix(helixX, vH * 0.04, helixW, vH * 0.46);
+
+    // coverage track: middle band, full width with left margin
+    const covY = vH * 0.56;
+    const covH = vH * 0.14;
+    drawCoverage(margin + 30, covY, vW - margin - 40, covH);
+
+    // chromosome ideogram: lower portion
+    drawChromosome(margin, vH * 0.80, vW - margin * 2, vH * 0.12);
+
+    // overall opacity wrapper via group
+    svg.style.opacity = '0.45';
+  }
+
+  render();
+  window.addEventListener('resize', render);
+})();
+
+/* ── Accordion ── */
+document.querySelectorAll('.rcard').forEach(card => {
+  card.querySelector('.rcard-header').addEventListener('click', () => {
+    const isOpen = card.classList.contains('open');
+    document.querySelectorAll('.rcard.open').forEach(c => c.classList.remove('open'));
+    if (!isOpen) card.classList.add('open');
+  });
+});
+
+/* ── Filter bar ── */
+document.getElementById('filterBar').addEventListener('click', e => {
+  const chip = e.target.closest('.fchip');
+  if (!chip) return;
+  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+  chip.classList.add('active');
+  const cat = chip.dataset.cat;
+  document.querySelectorAll('.rcard').forEach(card => {
+    if (cat === 'all' || (card.dataset.cats || '').includes(cat)) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+      card.classList.remove('open');
+    }
+  });
+});
+
+/* ── Nav active on scroll ── */
+const sections = document.querySelectorAll('section[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.style.color = '');
+      const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
+      if (active) active.style.color = 'var(--accent)';
+    }
+  });
+}, { threshold: 0.35 });
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
