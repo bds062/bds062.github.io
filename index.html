@@ -83,7 +83,7 @@
     .nav-links a:hover { color: var(--bright); text-decoration: none; }
 
     /* ─── Layout ─────────────────────────────────────────────── */
-    main { padding-top: 58px; }
+    main { padding-top: 58px; position: relative; z-index: 1; }
     .section {
       max-width: 880px;
       margin: 0 auto;
@@ -222,7 +222,7 @@
     .btn.ghost:hover { border-color: var(--dim); color: var(--body); background: transparent; }
 
     /* ─── Divider ────────────────────────────────────────────── */
-    .divider { border: none; border-top: 1px solid var(--border); max-width: 880px; margin: 0 auto; }
+    .divider { border: 0; height: 1rem; max-width: 880px; margin: 0 auto; }
 
     /* ─── Research cards ─────────────────────────────────────── */
     .research-grid { display: flex; flex-direction: column; gap: 12px; }
@@ -317,6 +317,15 @@
       display: flex; align-items: center; justify-content: center;
       font-family: var(--mono); font-size: 11px; color: var(--muted);
       margin-bottom: 1.1rem;
+    }
+
+    .ode-gif-quicklook {
+      min-height: 0; padding: 4px; overflow: hidden;
+      background: var(--bg); isolation: isolate;
+    }
+    .ode-gif-quicklook img {
+      display: block; width: 100%; height: auto;
+      object-fit: contain; background: #000; position: relative; z-index: 1;
     }
 
     .rcard-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
@@ -710,8 +719,8 @@
             I was invited as the only undergraduate to present at the QEED Seminar, to an audience of
             30+ graduate students and faculty.
           </p>
-          <div class="rcard-visual" id="vis-ode">
-            <span>[ phase portrait or time-series simulation — add here ]</span>
+          <div class="rcard-visual ode-gif-quicklook" id="vis-ode">
+            <img src="projects/host-pathogen-coevolution/assets/all_parameters_rasters.gif" alt="Merged ESS raster comparison for Default, Dianthus pavonius, and Silene latifolia" loading="lazy">
           </div>
           <div class="rcard-tools">
             <span class="tool-chip">Python</span>

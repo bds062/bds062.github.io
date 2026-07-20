@@ -22,11 +22,6 @@
     </a>`).join('');
   }
 
-  function renderBanner(media) {
-    if (!media || !media.length) return '';
-    return `<div class="project-banner" aria-label="Project raster animations">${media.map(item => `<img src="${esc(item.src)}" alt="${esc(item.label)}" loading="eager">`).join('')}</div>`;
-  }
-
   function renderMedia(media) {
     if (!media || !media.length) return '<div class="empty-media">Project figures, code links, and results will live here as this spotlight grows.</div>';
     return `<h2>Figures & animations</h2><div class="media-grid">${media.map(item => item.type === 'image'
@@ -43,7 +38,6 @@
       <div class="muted">${esc(project.organization)}</div>
       <div class="meta"><span class="status">${esc(project.status)}</span><span>${esc(project.dates)}</span></div>
       <p class="lede">${esc(project.summary)}</p><div class="tags">${tags(project.tags)}</div>
-      ${renderBanner(project.banner)}
       <div class="spotlight"><h2>Overview</h2><p>${esc(project.overview)}</p>
       <h2>What I’m building</h2><ul class="highlights">${project.highlights.map(x => `<li>${esc(x)}</li>`).join('')}</ul>
       ${renderMedia(project.media)}

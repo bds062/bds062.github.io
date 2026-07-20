@@ -120,37 +120,28 @@
     "media": [
       {
         "type": "image",
-        "label": "Our parameters · ESS raster sweep",
+        "label": "All parameter sets · merged ESS raster comparison",
+        "src": "assets/all_parameters_rasters.gif"
+      },
+      {
+        "type": "image",
+        "label": "Default · ESS raster sweep",
         "src": "assets/our_params_rasters.gif"
       },
       {
         "type": "image",
-        "label": "Dianthus parameters · ESS raster sweep",
+        "label": "Dianthus pavonius · ESS raster sweep",
         "src": "assets/dianthus_params_rasters.gif"
       },
       {
         "type": "image",
-        "label": "Silene parameters · ESS raster sweep",
+        "label": "Silene latifolia · ESS raster sweep",
         "src": "assets/silene_params_rasters.gif"
       },
       {
-        "type": "image",
+        "type": "pdf",
         "label": "Figure 4 · ESS across germination frames",
-        "src": "assets/fig4.png"
-      }
-    ],
-    "banner": [
-      {
-        "label": "Our parameters",
-        "src": "assets/our_params_rasters.gif"
-      },
-      {
-        "label": "Dianthus parameters",
-        "src": "assets/dianthus_params_rasters.gif"
-      },
-      {
-        "label": "Silene parameters",
-        "src": "assets/silene_params_rasters.gif"
+        "src": "assets/fig4.pdf"
       }
     ]
   },
