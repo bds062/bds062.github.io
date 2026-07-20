@@ -134,9 +134,23 @@
         "src": "assets/silene_params_rasters.gif"
       },
       {
-        "type": "pdf",
+        "type": "image",
         "label": "Figure 4 · ESS across germination frames",
-        "src": "assets/fig4.pdf"
+        "src": "assets/fig4.png"
+      }
+    ],
+    "banner": [
+      {
+        "label": "Our parameters",
+        "src": "assets/our_params_rasters.gif"
+      },
+      {
+        "label": "Dianthus parameters",
+        "src": "assets/dianthus_params_rasters.gif"
+      },
+      {
+        "label": "Silene parameters",
+        "src": "assets/silene_params_rasters.gif"
       }
     ]
   },
