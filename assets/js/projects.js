@@ -24,8 +24,11 @@
 
   function renderMedia(media) {
     if (!media || !media.length) return '<div class="empty-media">Project figures, code links, and results will live here as this spotlight grows.</div>';
-    return `<h2>Figures & animations</h2><div class="media-grid">${media.map(item => item.type === 'image'
+    const dense = media.length > 8 ? ' media-grid--dense' : media.length === 1 ? ' media-grid--single' : '';
+    return `<h2>Figures & animations</h2><div class="media-grid${dense}">${media.map(item => item.type === 'image'
       ? `<figure class="media-card"><img src="${esc(item.src)}" alt="${esc(item.label)}" loading="lazy"><figcaption>${esc(item.label)}</figcaption></figure>`
+      : item.type === 'video'
+      ? `<figure class="media-card"><video src="${esc(item.src)}" autoplay loop muted playsinline preload="metadata"></video><figcaption>${esc(item.label)}</figcaption></figure>`
       : `<a class="media-card" href="${esc(item.src)}" target="_blank" rel="noreferrer"><div class="pdf-card">${esc(item.label)} ↗</div></a>`).join('')}</div>`;
   }
 

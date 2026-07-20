@@ -165,6 +165,7 @@
     "highlights": [
       "Develop few-shot behavior classification from video.",
       "Work with expensive, behavior-level annotations.",
+      "Build a per-fish instance segmentation and keypoint tracking pipeline to turn raw tank footage into structured trajectories.",
       "Lead an 11-student research team."
     ],
     "links": [
@@ -172,6 +173,9 @@
         "label": "GitHub profile",
         "url": "https://github.com/bds062"
       }
+    ],
+    "media": [
+      { "type": "image", "label": "Tank footage mosaic — 20 clips composited together", "src": "assets/tank_footage_collage.gif" }
     ]
   }
 ]

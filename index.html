@@ -319,11 +319,11 @@
       margin-bottom: 1.1rem;
     }
 
-    .ode-gif-quicklook {
+    .media-quicklook {
       min-height: 0; padding: 4px; overflow: hidden;
       background: var(--bg); isolation: isolate;
     }
-    .ode-gif-quicklook img {
+    .media-quicklook img, .media-quicklook video {
       display: block; width: 100%; height: auto;
       object-fit: contain; background: #000; position: relative; z-index: 1;
     }
@@ -719,7 +719,7 @@
             I was invited as the only undergraduate to present at the QEED Seminar, to an audience of
             30+ graduate students and faculty.
           </p>
-          <div class="rcard-visual ode-gif-quicklook" id="vis-ode">
+          <div class="rcard-visual media-quicklook" id="vis-ode">
             <img src="projects/host-pathogen-coevolution/assets/all_parameters_rasters.gif" alt="Merged ESS raster comparison for Default, Dianthus pavonius, and Silene latifolia" loading="lazy">
           </div>
           <div class="rcard-tools">
@@ -762,8 +762,8 @@
             the main point of contact between our team and PI Abhinav Shrivastava.
             It's taught me as much about research teamwork as it has about computer vision.
           </p>
-          <div class="rcard-visual" id="vis-cichlid">
-            <span>[ behavior detection frame or model diagram — add here ]</span>
+          <div class="rcard-visual media-quicklook" id="vis-cichlid">
+            <video src="projects/cichlid-social-behavior/assets/segmentation_keypoints.mp4" autoplay loop muted playsinline preload="metadata"></video>
           </div>
           <div class="rcard-tools">
             <span class="tool-chip">Python</span>
