@@ -1,0 +1,172 @@
+[
+  {
+    "slug": "deep-learning-structural-variation",
+    "accent": "purple",
+    "category": "Research Intern · Kolmogorov Lab",
+    "title": "Deep Learning for Complex Structural Variation in Cancer Genomes",
+    "organization": "Long-read WGS · somatic SV detection · cancer genomics",
+    "dates": "May 2025 – Present",
+    "status": "Current",
+    "tags": [
+      "Python",
+      "PyTorch",
+      "Long-read WGS",
+      "Structural Variants",
+      "Cancer Genomics",
+      "SLURM / HPC"
+    ],
+    "summary": "Building a deep learning model to identify complex structural variants in cancer genomes—rearrangements, inversions, and copy-number events that can evade short-read callers.",
+    "overview": "This project uses long-read whole-genome sequencing data to study ambiguous, multi-breakpoint signatures that define complex structural variation. It sits at the intersection of sequence-level deep learning, clinical genomics, and computational methods for noisy long reads.",
+    "highlights": [
+      "Model complex structural variants in cancer genomes.",
+      "Work with long-read whole-genome sequencing data.",
+      "Develop methods for difficult multi-breakpoint events."
+    ],
+    "links": [
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ]
+  },
+  {
+    "slug": "helicoverpa-cnv",
+    "accent": "green",
+    "category": "Computational Genomics · Fritz Lab, UMD",
+    "title": "CNV Identification in Helicoverpa zea",
+    "organization": "Bt pesticide resistance · 237 wild WGS samples",
+    "dates": "Feb 2024 – Present",
+    "status": "Active",
+    "tags": [
+      "Python",
+      "Bash",
+      "Rust",
+      "Bowtie2",
+      "Samtools",
+      "VCFtools",
+      "SLURM"
+    ],
+    "summary": "Analyzing 237 whole-genome sequenced wild H. zea samples to understand how copy-number variation contributes to adaptive resistance to Bt pesticides.",
+    "overview": "I am building a CNV identification tool for archived short-read data from a non-model organism, where reference genomes are messy and read depths are uneven. The work focuses on extracting reliable signal from noisy real-world genomic data.",
+    "highlights": [
+      "Analyze 237 wild whole-genome samples.",
+      "Develop a workflow for uneven, archived short-read data.",
+      "Presented at PAG 2026; recipient of 2nd Prize in the CSSA Poster Competition."
+    ],
+    "links": [
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ]
+  },
+  {
+    "slug": "bacterial-genome-surveillance",
+    "accent": "orange",
+    "category": "Bioinformatics Intern · AstraZeneca",
+    "title": "Bacterial Genome Surveillance Pipeline & Dashboard",
+    "organization": "Early Vaccines & Immune Therapies · molecular surveillance · PowerBI",
+    "dates": "May – Aug 2025",
+    "status": "Internship",
+    "tags": [
+      "Python",
+      "PowerBI",
+      "Bash",
+      "Genome Assembly",
+      "Structural Bioinformatics"
+    ],
+    "summary": "Built infrastructure for genomic surveillance, including a bacterial genome-processing pipeline, a PowerBI dashboard, and a prototype system for flagging high-risk strains.",
+    "overview": "This project translated genomic processing into tools that could be used by clinical and wet-lab teams without requiring them to run scripts. It was an exercise in making computational biology useful across an organization.",
+    "highlights": [
+      "Engineered a bacterial genome-processing pipeline for strain tracking.",
+      "Built a PowerBI dashboard for genomic insights.",
+      "Prototyped structural surveillance for high-risk bacterial strains."
+    ],
+    "links": [
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ]
+  },
+  {
+    "slug": "host-pathogen-coevolution",
+    "accent": "blue",
+    "category": "Mathematical Biology · Bruns Lab, UMD",
+    "title": "Host–Pathogen Coevolution ODE Model",
+    "organization": "Temporal adaptation · allelic variation · seasonal forcing",
+    "dates": "Jan 2024 – Present",
+    "status": "Active",
+    "tags": [
+      "Python",
+      "NumPy",
+      "SciPy",
+      "Matplotlib",
+      "ODE Solvers"
+    ],
+    "summary": "A deterministic ODE system for asking when hosts and pathogens should adapt over time under allelic variation, seasonal forcing, and birth pulses.",
+    "overview": "The model represents host–pathogen coevolution with seasonal dynamics and competing pathogen genotypes. It produces testable predictions about pathogen timing for future laboratory and field experiments.",
+    "highlights": [
+      "Model temporal adaptation and allelic variation.",
+      "Represent seasonal forcing and birth pulses.",
+      "Presented at the EEID NE 2025 Poster session and QEED Seminar."
+    ],
+    "links": [
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "label": "Our parameters · ESS raster sweep",
+        "src": "assets/our_params_rasters.gif"
+      },
+      {
+        "type": "image",
+        "label": "Dianthus parameters · ESS raster sweep",
+        "src": "assets/dianthus_params_rasters.gif"
+      },
+      {
+        "type": "image",
+        "label": "Silene parameters · ESS raster sweep",
+        "src": "assets/silene_params_rasters.gif"
+      },
+      {
+        "type": "pdf",
+        "label": "Figure 4 · ESS across germination frames",
+        "src": "assets/fig4.pdf"
+      }
+    ]
+  },
+  {
+    "slug": "cichlid-social-behavior",
+    "accent": "blue",
+    "category": "Computer Vision · Gemstone Team FSH, UMD",
+    "title": "Social Behavior Classification in Lake Malawi Cichlids",
+    "organization": "Few-shot deep learning · PI: Abhinav Shrivastava",
+    "dates": "Aug 2023 – Present",
+    "status": "Active",
+    "tags": [
+      "Python",
+      "PyTorch",
+      "Few-Shot Learning",
+      "Computer Vision",
+      "OpenCV"
+    ],
+    "summary": "A few-shot classification framework for identifying social behaviors of Lake Malawi cichlids from video, where fish look similar and behavior labels are expensive.",
+    "overview": "I lead a team of 11 students and serve as the main point of contact between our team and PI Abhinav Shrivastava. The project combines computer vision research with the practical challenges of building a collaborative research team.",
+    "highlights": [
+      "Develop few-shot behavior classification from video.",
+      "Work with expensive, behavior-level annotations.",
+      "Lead an 11-student research team."
+    ],
+    "links": [
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ]
+  }
+]
