@@ -204,6 +204,7 @@
     .chip.hl { border-color: rgba(91,156,246,0.35); color: var(--accent); background: rgba(91,156,246,0.07); }
 
     .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+    .hero-ctas .download-btn::before { content: '↓ '; }
 
     .btn {
       font-size: 13px;
@@ -328,6 +329,12 @@
       object-fit: contain; background: #000; position: relative; z-index: 1;
     }
 
+    .complex-sv-quicklook {
+      padding: 6px; background: #fff; border-style: solid;
+    }
+    .complex-sv-quicklook a { display: block; width: 100%; }
+    .complex-sv-quicklook img { background: #fff; }
+
     .rcard-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
     .tool-chip {
       font-family: var(--mono); font-size: 10.5px;
@@ -358,6 +365,18 @@
 
     /* ─── Publications ───────────────────────────────────────── */
     .pub-list { display: flex; flex-direction: column; gap: 1rem; }
+    .pub-filter-note { color: var(--muted); font-family: var(--mono); font-size: 11px; margin: -0.75rem 0 1.5rem; }
+    .pub-type {
+      display: inline-flex; align-items: center; width: fit-content;
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+      margin-bottom: 0.55rem; border: 1px solid rgba(74,222,145,0.24);
+      color: var(--accent); background: rgba(74,222,145,0.08);
+    }
+    .pub-type.talk { color: var(--accent2); border-color: rgba(91,156,246,0.28); background: rgba(91,156,246,0.08); }
+    .pub-type.paper { color: var(--purple); border-color: rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); }
+    .pub-type.editorial { color: var(--warm); border-color: rgba(251,146,60,0.28); background: rgba(251,146,60,0.08); }
+    .pub-item.is-hidden { display: none; }
     .pub-item {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -390,6 +409,30 @@
       background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.2);
       padding: 2px 7px; border-radius: 4px; margin-top: 5px;
     }
+
+    /* ─── Documents / awards ────────────────────────────────── */
+    .document-grid, .award-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+    .document-card, .award-item {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--r-lg); padding: 1.2rem 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .document-card:hover, .award-item:hover { border-color: var(--muted); }
+    .document-type, .award-type {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent); margin-bottom: 0.45rem;
+    }
+    .document-title, .award-title { color: var(--bright); font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .document-meta, .award-meta { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-top: 0.45rem; }
+    .document-link { display: inline-block; margin-top: 1rem; font-family: var(--mono); font-size: 12px; }
+    .document-link::before { content: '↓ '; }
+    .award-list { grid-template-columns: 1fr; }
+    .award-item { display: flex; gap: 1rem; align-items: flex-start; }
+    .award-year { color: var(--muted); font-family: var(--mono); font-size: 11px; flex-shrink: 0; padding-top: 2px; width: 34px; }
+    .award-content { flex: 1; }
+    .award-title { color: var(--warm); }
+    .award-meta { color: var(--dim); }
+    @media (max-width: 600px) { .document-grid { grid-template-columns: 1fr; } }
 
     /* ─── About terminal ─────────────────────────────────────── */
     .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
@@ -494,6 +537,8 @@
   <ul class="nav-links">
     <li><a href="#research">Research</a></li>
     <li><a href="#publications">Publications</a></li>
+    <li><a href="#awards">Awards</a></li>
+    <li><a href="#documents">CV / Resume</a></li>
     <li><a href="#about">About</a></li>
     <li><a href="mailto:bds062@umd.edu">Contact</a></li>
   </ul>
@@ -533,6 +578,7 @@
 
       <div class="hero-ctas">
         <a class="btn" href="#research">View Research</a>
+        <a class="btn ghost download-btn" href="BhargavSrinivasanCV.pdf" download>CV</a>
         <a class="btn ghost" href="https://github.com/bds062" target="_blank">GitHub</a>
         <a class="btn ghost" href="https://linkedin.com/in/bhargavdsrinivasan" target="_blank">LinkedIn</a>
         <a class="btn ghost" href="mailto:bds062@umd.edu">Email</a>
@@ -560,7 +606,7 @@
     <div class="research-grid" id="researchGrid">
 
       <!-- ── Kolmogorov Lab (new, DL + cancer) ─────────────── -->
-      <div class="rcard" data-cats="dl genomics industry">
+      <div class="rcard open" data-cats="dl genomics industry">
         <div class="rcard-header">
           <div class="rcard-bar purple"></div>
           <div class="rcard-top">
@@ -578,15 +624,15 @@
         </div>
         <div class="rcard-body">
           <p class="rcard-desc">
-            Building a deep learning model to identify complex structural variants (SVs) in cancer genomes —
-            the rearrangements, inversions, and copy-number events that drive tumor evolution but evade
-            short-read callers. Working with long-read whole-genome sequencing data to train a model
-            that can parse the ambiguous, multi-breakpoint signatures that define complex SVs.
-            This project sits right at the intersection of my interests: sequence-level deep learning,
-            clinical genomics, and the computational challenge of reading through noisy long reads.
+            Developing complex-SV, a long-read framework that combines Wakhan copy-number segments
+            and Severus breakpoint graphs to detect BFB, chromothripsis, ecDNA, and seismic
+            amplification. The method supports both semi-localized event calls and chromosome-level
+            multilabel screening, with genome-held-out evaluation across a 48-cell-line cohort.
           </p>
-          <div class="rcard-visual" id="vis-kol">
-            <span>[ model architecture or SV example figure — add here ]</span>
+          <div class="rcard-visual media-quicklook complex-sv-quicklook" id="vis-kol">
+            <a href="projects/deep-learning-structural-variation/" aria-label="Open the complex-SV project spotlight">
+              <img src="projects/deep-learning-structural-variation/assets/complex_sv_pipeline.png" alt="End-to-end complex-SV method" loading="lazy">
+            </a>
           </div>
           <div class="rcard-tools">
             <span class="tool-chip">Python</span>
@@ -598,13 +644,13 @@
           </div>
           <div class="rcard-links">
             <a href="projects/deep-learning-structural-variation/">Project Spotlight</a>
-            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
+            <a href="https://github.com/bds062/complex-SV" target="_blank">Code (GitHub)</a>
           </div>
         </div>
       </div>
 
       <!-- ── CNV Tool ───────────────────────────────────────── -->
-      <div class="rcard" data-cats="dl genomics">
+      <div class="rcard open" data-cats="dl genomics">
         <div class="rcard-header">
           <div class="rcard-bar green"></div>
           <div class="rcard-top">
@@ -651,7 +697,7 @@
       </div>
 
       <!-- ── AstraZeneca ────────────────────────────────────── -->
-      <div class="rcard" data-cats="genomics industry">
+      <div class="rcard open" data-cats="genomics industry">
         <div class="rcard-header">
           <div class="rcard-bar orange"></div>
           <div class="rcard-top">
@@ -694,7 +740,7 @@
       </div>
 
       <!-- ── Host–Pathogen ODE ──────────────────────────────── -->
-      <div class="rcard" data-cats="math">
+      <div class="rcard open" data-cats="math">
         <div class="rcard-header">
           <div class="rcard-bar"></div>
           <div class="rcard-top">
@@ -738,7 +784,7 @@
       </div>
 
       <!-- ── Cichlid CV ─────────────────────────────────────── -->
-      <div class="rcard" data-cats="dl">
+      <div class="rcard open" data-cats="dl">
         <div class="rcard-header">
           <div class="rcard-bar"></div>
           <div class="rcard-top">
@@ -788,13 +834,67 @@
   <section class="section" id="publications">
     <p class="eyebrow">Publications & Presentations</p>
     <h2 class="section-title">Select work</h2>
-    <p class="section-sub">Conferences, posters, and editorial work — 2024 to present.</p>
+    <p class="section-sub">Conferences, posters, talks, papers, and editorial work — 2024 to present.</p>
+
+    <div class="filter-bar" id="publicationFilterBar" aria-label="Filter publications by type">
+      <span class="fchip active" data-pub-type="all">All</span>
+      <span class="fchip" data-pub-type="poster">Posters</span>
+      <span class="fchip" data-pub-type="talk">Talks</span>
+      <span class="fchip" data-pub-type="paper">Papers</span>
+      <span class="fchip" data-pub-type="editorial">Editorials</span>
+    </div>
+    <p class="pub-filter-note" id="publicationFilterNote">Showing all publication types</p>
 
     <div class="pub-list">
-
-      <div class="pub-item">
+      <div class="pub-item" data-pub-types="paper">
         <div class="pub-year">2026</div>
         <div class="pub-content">
+          <div class="pub-type paper">Paper</div>
+          <div class="pub-venue">arXiv</div>
+          <div class="pub-title">CRANE: Correcting Errors in Raw Nanopore Signals Using Hidden Markov Models</div>
+          <div class="pub-authors">Simon Ambrozak, Ulysse McConnell, <strong>Srinivasan B.</strong>, Burak Ozkan, Ernest Zhang, Can Firtina</div>
+          <div class="pub-meta">Preprint · 2026</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">Jul 2026</div>
+        <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
+          <div class="pub-venue">ISMB: Intelligent Systems for Molecular Biology · Washington, D.C.</div>
+          <div class="pub-title">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Ambrozak S., Firtina C.</div>
+          <div class="pub-meta">Poster presentation · July 2026</div>
+          <div class="pub-award">🏆 HiTSeq Best Poster Award</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="poster talk">
+        <div class="pub-year">Jul 2026</div>
+        <div class="pub-content">
+          <div class="pub-type poster">Poster + talk</div>
+          <div class="pub-venue">NCI Summer School on Algorithmic Cancer Biology · Bethesda, MD</div>
+          <div class="pub-title">A Deep Learning Approach to Identifying Complex Structural Variation in the Genome</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
+          <div class="pub-meta">Poster presentation &amp; flash talk · July 2026</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="talk">
+        <div class="pub-year">Jul 2026</div>
+        <div class="pub-content">
+          <div class="pub-type talk">Talk</div>
+          <div class="pub-venue">Cancer Data Science Laboratory · National Cancer Institute</div>
+          <div class="pub-title">A Deep Learning Approach to Identifying Complex Structural Variation in the Genome</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
+          <div class="pub-meta">Invited seminar talk · July 2026</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">Jun 2026</div>
+        <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
           <div class="pub-venue">ASM Microbe 2026 · Washington, D.C.</div>
           <div class="pub-title">A machine learning approach to identify unique NTHi clusters using LOS biosynthetic genes</div>
           <div class="pub-authors">Gopalakrishnan V., Godfrey V., <strong>Srinivasan B.</strong>, et al.</div>
@@ -802,9 +902,10 @@
         </div>
       </div>
 
-      <div class="pub-item">
-        <div class="pub-year">2026</div>
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">May 2026</div>
         <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
           <div class="pub-venue">Plant & Animal Genome Conference · San Diego, CA</div>
           <div class="pub-title">Correlations between Read Depth, Copy Number Variation, and Bt Resistance in <em>Helicoverpa zea</em></div>
           <div class="pub-authors"><strong>Srinivasan B.</strong>, Fritz M.</div>
@@ -813,9 +914,33 @@
         </div>
       </div>
 
-      <div class="pub-item">
-        <div class="pub-year">2025</div>
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">May 2026</div>
         <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
+          <div class="pub-venue">Entomological Society of Washington Student Showcase · Washington, D.C.</div>
+          <div class="pub-title">Correlations between Read Depth, Copy Number Variation, and Bt Resistance in <em>Helicoverpa zea</em></div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Fritz M.</div>
+          <div class="pub-meta">Poster presentation · May 2026</div>
+          <div class="pub-award">🏆 Best Poster Award</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="talk">
+        <div class="pub-year">Apr 2026</div>
+        <div class="pub-content">
+          <div class="pub-type talk">Talk</div>
+          <div class="pub-venue">Algorithmic Bioinformatics Seminar · University of Maryland</div>
+          <div class="pub-title">Unsupervised Learning for DNA Modification Profiles from Nanopore Sequencing Data</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
+          <div class="pub-meta">Invited talk · College Park, MD · April 2026</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">Nov 2025</div>
+        <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
           <div class="pub-venue">EEID NE Meeting · University Park, PA</div>
           <div class="pub-title">When should a pathogen strike: navigating the landscape of birth pulses and mating season</div>
           <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
@@ -823,9 +948,10 @@
         </div>
       </div>
 
-      <div class="pub-item">
-        <div class="pub-year">2025</div>
+      <div class="pub-item" data-pub-types="poster">
+        <div class="pub-year">Aug 2025</div>
         <div class="pub-content">
+          <div class="pub-type poster">Poster</div>
           <div class="pub-venue">AstraZeneca VIT Intern Symposium · Gaithersburg, MD</div>
           <div class="pub-title">Developing a Molecular Surveillance Dashboard</div>
           <div class="pub-authors"><strong>Srinivasan B.</strong>, Mahool K.</div>
@@ -833,9 +959,10 @@
         </div>
       </div>
 
-      <div class="pub-item">
-        <div class="pub-year">2025</div>
+      <div class="pub-item" data-pub-types="talk">
+        <div class="pub-year">Apr 2025</div>
         <div class="pub-content">
+          <div class="pub-type talk">Talk</div>
           <div class="pub-venue">QEED Seminar · College Park, MD</div>
           <div class="pub-title">Host Life History vs Pathogen Optimization</div>
           <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
@@ -843,9 +970,10 @@
         </div>
       </div>
 
-      <div class="pub-item">
-        <div class="pub-year">2024</div>
+      <div class="pub-item" data-pub-types="editorial">
+        <div class="pub-year">Sep 2024</div>
         <div class="pub-content">
+          <div class="pub-type editorial">Editorial</div>
           <div class="pub-venue">Pain Management Journal · Sep 2024</div>
           <div class="pub-title">Artificial intelligence and pain management: cautiously optimistic</div>
           <div class="pub-authors"><strong>Srinivasan B.</strong>, Venkataraman A., Raja S.N.</div>
@@ -853,6 +981,91 @@
         </div>
       </div>
 
+      <div class="pub-item" data-pub-types="paper">
+        <div class="pub-year">In prep</div>
+        <div class="pub-content">
+          <div class="pub-type paper">Paper</div>
+          <div class="pub-venue">In preparation</div>
+          <div class="pub-title">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Simon Ambrozak, Can Firtina</div>
+          <div class="pub-meta">Manuscript in preparation</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="paper">
+        <div class="pub-year">In prep</div>
+        <div class="pub-content">
+          <div class="pub-type paper">Paper</div>
+          <div class="pub-venue">In preparation</div>
+          <div class="pub-title">FSHFormer: A Computer Vision Model for Automated Cichlid Behavior Annotation</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, William Lamousin, Charles Phan, Jason Liu, Shubh Sharma, Vijay Jayasuriya, Ariel Bazan, Cade McGeehan, Ofure Osunbor, Tahir Haroon, Pulkit Kumar, Abhinav Shrivastava</div>
+          <div class="pub-meta">Manuscript in preparation</div>
+        </div>
+      </div>
+
+      <div class="pub-item" data-pub-types="paper">
+        <div class="pub-year">In prep</div>
+        <div class="pub-content">
+          <div class="pub-type paper">Paper</div>
+          <div class="pub-venue">In preparation</div>
+          <div class="pub-title">When Should a Pathogen Strike? Navigating the Landscape of Birth Pulses and Mating Season</div>
+          <div class="pub-authors"><strong>Srinivasan B.</strong>, Sam Hulse, Emily Bruns</div>
+          <div class="pub-meta">Manuscript in preparation</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ─── Awards ────────────────────────────────────────────── -->
+  <section class="section" id="awards">
+    <p class="eyebrow">Recognition</p>
+    <h2 class="section-title">Awards &amp; support</h2>
+    <p class="section-sub">Selected honors and funding supporting research, travel, and scientific communication.</p>
+
+    <div class="award-list">
+      <div class="award-item">
+        <div class="award-year">2026</div>
+        <div class="award-content"><div class="award-type">ISMB · HiTSeq</div><div class="award-title">Best Poster Award</div><div class="award-meta">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div></div>
+      </div>
+      <div class="award-item">
+        <div class="award-year">2026</div>
+        <div class="award-content"><div class="award-type">Entomological Society of Washington</div><div class="award-title">Student Showcase Best Poster Award</div><div class="award-meta">Helicoverpa zea copy number variation and Bt resistance · May 2026</div></div>
+      </div>
+      <div class="award-item">
+        <div class="award-year">2025</div>
+        <div class="award-content"><div class="award-type">University of Maryland · Gemstone Library Awards</div><div class="award-title">Best Talk Award</div><div class="award-meta">Cichlid social behavior computer vision project · $2,000 in research funding</div></div>
+      </div>
+      <div class="award-item">
+        <div class="award-year">2024–26</div>
+        <div class="award-content"><div class="award-type">Research &amp; professional support</div><div class="award-title">Honors College Research Grant, CS Professional Development Fund, GO Fund, and Ernest N. Cory Undergraduate Scholarship</div><div class="award-meta">More than $5,000 collectively supporting independent research and conference travel</div></div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ─── Documents ────────────────────────────────────────── -->
+  <section class="section" id="documents">
+    <p class="eyebrow">Documents</p>
+    <h2 class="section-title">CV &amp; resume</h2>
+    <p class="section-sub">Download the latest versions for a complete overview of research experience, presentations, publications, and awards.</p>
+
+    <div class="document-grid">
+      <div class="document-card">
+        <div class="document-type">Academic curriculum vitae</div>
+        <div class="document-title">Bhargav Srinivasan CV</div>
+        <div class="document-meta">Updated August 3, 2026 · PDF</div>
+        <a class="document-link" href="BhargavSrinivasanCV.pdf" download>Download CV</a>
+      </div>
+      <div class="document-card">
+        <div class="document-type">One-page resume</div>
+        <div class="document-title">Bhargav Srinivasan Resume</div>
+        <div class="document-meta">Updated August 3, 2026 · PDF</div>
+        <a class="document-link" href="BhargavSrinivasanResume.pdf" download>Download resume</a>
+      </div>
     </div>
   </section>
 
@@ -1077,9 +1290,7 @@
 /* ── Accordion ── */
 document.querySelectorAll('.rcard').forEach(card => {
   card.querySelector('.rcard-header').addEventListener('click', () => {
-    const isOpen = card.classList.contains('open');
-    document.querySelectorAll('.rcard.open').forEach(c => c.classList.remove('open'));
-    if (!isOpen) card.classList.add('open');
+    card.classList.toggle('open');
   });
 });
 
@@ -1091,14 +1302,32 @@ document.getElementById('filterBar').addEventListener('click', e => {
   chip.classList.add('active');
   const cat = chip.dataset.cat;
   document.querySelectorAll('.rcard').forEach(card => {
-    if (cat === 'all' || (card.dataset.cats || '').includes(cat)) {
-      card.style.display = '';
-    } else {
-      card.style.display = 'none';
-      card.classList.remove('open');
-    }
+    const show = cat === 'all' || (card.dataset.cats || '').includes(cat);
+    card.style.display = show ? '' : 'none';
+    card.classList.toggle('open', show);
   });
 });
+
+/* ── Publication type filter ── */
+const publicationFilterBar = document.getElementById('publicationFilterBar');
+const publicationFilterNote = document.getElementById('publicationFilterNote');
+if (publicationFilterBar) {
+  publicationFilterBar.addEventListener('click', e => {
+    const chip = e.target.closest('[data-pub-type]');
+    if (!chip) return;
+    publicationFilterBar.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    const type = chip.dataset.pubType;
+    const label = chip.textContent.trim();
+    document.querySelectorAll('.pub-item[data-pub-types]').forEach(item => {
+      const show = type === 'all' || item.dataset.pubTypes.split(' ').includes(type);
+      item.classList.toggle('is-hidden', !show);
+    });
+    publicationFilterNote.textContent = type === 'all'
+      ? 'Showing all publication types'
+      : 'Showing ' + label.toLowerCase() + ' only';
+  });
+}
 
 /* ── Nav active on scroll ── */
 const sections = document.querySelectorAll('section[id]');

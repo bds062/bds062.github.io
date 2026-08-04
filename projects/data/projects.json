@@ -15,17 +15,58 @@
       "Cancer Genomics",
       "SLURM / HPC"
     ],
-    "summary": "Building a deep learning model to identify complex structural variants in cancer genomes—rearrangements, inversions, and copy-number events that can evade short-read callers.",
-    "overview": "This project uses long-read whole-genome sequencing data to study ambiguous, multi-breakpoint signatures that define complex structural variation. It sits at the intersection of sequence-level deep learning, clinical genomics, and computational methods for noisy long reads.",
+    "summary": "Developing complex-SV, a long-read framework that combines copy-number and breakpoint-graph representations to detect BFB, chromothripsis, ecDNA, and seismic amplification.",
+    "overview": "complex-SV starts from Wakhan copy-number segments and Severus structural-variant calls. It generates label-free candidate regions, embeds copy-number and breakpoint-graph evidence with pretrained encoders, and supports both semi-localized event detection and multilabel chromosome-level screening. Models are evaluated with genome-held-out splits across a 48-cell-line cohort.",
     "highlights": [
-      "Model complex structural variants in cancer genomes.",
-      "Work with long-read whole-genome sequencing data.",
-      "Develop methods for difficult multi-breakpoint events."
+      "Built a label-free, multi-evidence candidate generator for complex genomic regions.",
+      "Pretrained copy-number and breakpoint-graph encoders and fused their representations for downstream classification.",
+      "Developed localized MIL and chromosome-level multilabel models with genome-held-out evaluation."
     ],
     "links": [
       {
+        "label": "complex-SV on GitHub",
+        "url": "https://github.com/bds062/complex-SV"
+      },
+      {
         "label": "GitHub profile",
         "url": "https://github.com/bds062"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "label": "End-to-end complex-SV method",
+        "src": "assets/complex_sv_pipeline.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Localized false positive · BFB · SCC152 chr9",
+        "src": "assets/fp_bfb_scc152_chr9.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Localized false positive · chromothripsis · MDA-MB-361 chr16q",
+        "src": "assets/fp_chromothripsis_mda_md_361_chr16q.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Localized false positive · ecDNA · BT474 chr15q",
+        "src": "assets/fp_ecdna_bt474_chr15q.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Localized false positive · seismic amplification · BT474 chr17q",
+        "src": "assets/fp_seismic_amplification_bt474_chr17q.png",
+        "layout": "wide"
+      },
+      {
+        "type": "pdf",
+        "label": "complex-SV project poster · 2026",
+        "src": "assets/complex_sv_poster_2026.pdf"
       }
     ]
   },
@@ -175,7 +216,11 @@
       }
     ],
     "media": [
-      { "type": "image", "label": "Tank footage mosaic — 20 clips composited together", "src": "assets/tank_footage_collage.gif" }
+      {
+        "type": "image",
+        "label": "Tank footage mosaic — 20 clips composited together",
+        "src": "assets/tank_footage_collage.gif"
+      }
     ]
   }
 ]
