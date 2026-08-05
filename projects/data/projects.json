@@ -41,6 +41,18 @@
       },
       {
         "type": "image",
+        "label": "Candidate generation and label assignment",
+        "src": "assets/candidate_generation.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Self-supervised featurization and embedding",
+        "src": "assets/featurization.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
         "label": "Localized false positive · BFB · SCC152 chr9",
         "src": "assets/fp_bfb_scc152_chr9.png",
         "layout": "wide"
