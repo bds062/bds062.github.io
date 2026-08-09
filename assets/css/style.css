@@ -1,0 +1,223 @@
+/* Site-wide styles. Plain and static — no build step, no JavaScript. */
+
+/* University of Maryland colors: red #E21833, gold #FFD200. */
+:root {
+  --umd-red: #E21833;
+  --umd-gold: #FFD200;
+  --rule: #ddd;
+  --dim: #555;
+}
+
+body {
+  max-width: 45em;
+  margin: 2.5em auto;
+  padding: 0 1.25em;
+  font-family: Georgia, "Times New Roman", Times, serif;
+  font-size: 17px;
+  line-height: 1.55;
+  color: #111;
+  background: #fff;
+}
+
+a { color: #0645ad; }
+a:visited { color: #663366; }
+
+h1 {
+  font-size: 1.9em;
+  font-weight: normal;
+  margin: 0 0 0.1em;
+}
+
+h2 {
+  font-size: 1.2em;
+  margin: 2.2em 0 0.6em;
+  padding-bottom: 0.2em;
+  border-bottom: 2px solid var(--umd-red);
+}
+
+h3 {
+  font-size: 1.03em;
+  margin: 1.5em 0 0.3em;
+}
+
+p { margin: 0.7em 0; }
+
+ul { padding-left: 1.4em; }
+li { margin: 0.35em 0; }
+
+hr {
+  border: 0;
+  border-top: 1px solid #ddd;
+  margin: 2em 0;
+}
+
+img, video { max-width: 100%; height: auto; }
+
+/* Header block on the homepage. */
+.masthead {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+}
+.portrait {
+  flex: 0 0 auto;
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border: 3px solid var(--umd-red);
+}
+.masthead-text { flex: 1 1 auto; }
+.umd-logo {
+  display: block;
+  width: 210px;
+  height: auto;
+  margin-top: 0.6em;
+}
+@media (max-width: 34em) {
+  .masthead { display: block; }
+  .portrait { margin-bottom: 0.9em; }
+}
+
+.subtitle {
+  font-size: 1.05em;
+  color: #444;
+  margin: 0 0 0.8em;
+}
+
+.contact {
+  margin: 0.8em 0 0;
+  font-size: 0.95em;
+}
+
+.nav {
+  position: sticky;
+  top: 0;
+  margin: 0.7em 0 0;
+  padding: 0.7em 0;
+  background: #fff;
+  border-bottom: 3px solid var(--umd-gold);
+  font-size: 0.95em;
+  z-index: 10;
+}
+.nav a { margin-right: 1em; }
+
+/* Reverse-chronological entry lists: research, publications, awards. */
+.entry { margin: 1.4em 0; }
+.entry-title { font-weight: bold; }
+.entry-meta {
+  color: #555;
+  font-size: 0.93em;
+  font-style: italic;
+}
+.entry p { margin: 0.35em 0; }
+
+.entry-figure { margin: 0.9em 0; }
+.entry-figure img,
+.entry-figure video {
+  display: block;
+  width: 100%;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.entry-figure figcaption {
+  color: #555;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0.35em;
+}
+
+.pubs { list-style: none; padding-left: 0; }
+.pubs li { margin: 0.9em 0; }
+.venue { color: #555; font-style: italic; }
+.note { color: #555; font-size: 0.93em; }
+
+footer {
+  margin-top: 3em;
+  padding-top: 1em;
+  border-top: 1px solid #ddd;
+  color: #555;
+  font-size: 0.9em;
+}
+
+/* ── Project pages (rendered by assets/js/projects.js) ────────── */
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  margin-bottom: 2em;
+  padding: 0.6em 0;
+  background: #fff;
+  border-bottom: 3px solid var(--umd-gold);
+  font-size: 0.95em;
+  z-index: 10;
+}
+.site-nav .brand {
+  margin-right: 1em;
+  font-weight: bold;
+  color: var(--umd-red);
+}
+.site-nav .links { display: inline; }
+.site-nav .links a { margin-right: 1em; }
+
+.page { margin: 0; }
+.eyebrow { color: #555; font-size: 0.93em; margin: 0; }
+.muted { color: #555; }
+.lede { margin: 0.7em 0 1em; }
+.meta { color: #555; font-size: 0.93em; margin: 0.4em 0; }
+.meta span { margin-right: 1em; }
+
+.project-card {
+  display: block;
+  padding: 1em 0;
+  border-bottom: 1px solid #ddd;
+  color: inherit;
+  text-decoration: none;
+}
+.project-card h2 {
+  font-size: 1.1em;
+  margin: 0.2em 0;
+  padding: 0;
+  border: 0;
+  color: #0645ad;
+  text-decoration: underline;
+}
+.project-card p { font-size: 0.97em; }
+.project-card .arrow { display: none; }
+
+.tags { color: #555; font-size: 0.9em; margin: 0.5em 0; }
+.tag:not(:last-child)::after { content: " · "; }
+
+.back { display: inline-block; margin-bottom: 1.5em; }
+.spotlight-banner {
+  display: block;
+  width: 100%;
+  max-height: 320px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+  margin-bottom: 1.5em;
+}
+.spotlight { margin-top: 1.5em; }
+.highlights li { margin: 0.4em 0; }
+
+.links a { margin-right: 1em; }
+.empty-media { color: #555; font-style: italic; margin: 1.2em 0; }
+
+.media-card {
+  display: block;
+  margin: 1.5em 0;
+  color: inherit;
+}
+.media-card img,
+.media-card video {
+  display: block;
+  width: 100%;
+  border: 1px solid #ddd;
+  background: #fff;
+}
+.media-card figcaption {
+  color: #555;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0.35em;
+}
+.media-grid--dense .media-card { margin: 1em 0; }

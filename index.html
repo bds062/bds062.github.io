@@ -1,1347 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bhargav Srinivasan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet" />
-  <style>
-    /* ─── Tokens ─────────────────────────────────────────────── */
-    :root {
-      --bg:        #070f0b;
-      --surface:   #0e1812;
-      --surface2:  #121f17;
-      --border:    #1a2e21;
-      --muted:     #2e4d3a;
-      --dim:       #5a8a6a;
-      --body:      #b0d4bc;
-      --bright:    #e4f5ea;
-      --accent:    #4ade91;   /* genome-green — primary */
-      --accent2:   #5b9cf6;   /* neural-blue — secondary */
-      --warm:      #fb923c;   /* activation-orange — highlight */
-      --purple:    #a78bfa;   /* embedding-purple */
-      --mono:      'JetBrains Mono', monospace;
-      --sans:      'Inter', sans-serif;
-      --r:         8px;
-      --r-lg:      14px;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--body);
-      font-family: var(--sans);
-      font-size: 15px;
-      line-height: 1.65;
-      overflow-x: hidden;
-    }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-
-    ::-webkit-scrollbar { width: 5px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--muted); border-radius: 3px; }
-
-    /* ─── Nav ─────────────────────────────────────────────────── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 0 clamp(1.5rem, 5vw, 4rem);
-      height: 58px;
-      background: rgba(7, 9, 15, 0.88);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--border);
-    }
-    .nav-logo {
-      font-family: var(--mono);
-      font-size: 13px;
-      color: var(--bright);
-      letter-spacing: 0.01em;
-      display: flex; align-items: center; gap: 8px;
-    }
-    .nav-logo-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--accent2);
-      animation: softpulse 2.8s ease-in-out infinite;
-    }
-    @keyframes softpulse {
-      0%,100% { opacity: 1; } 50% { opacity: 0.35; }
-    }
-    .nav-links {
-      display: flex; gap: 2rem; list-style: none;
-    }
-    .nav-links a {
-      font-size: 13px;
-      font-weight: 400;
-      color: var(--dim);
-      transition: color 0.2s;
-      letter-spacing: 0.01em;
-    }
-    .nav-links a:hover { color: var(--bright); text-decoration: none; }
-
-    /* ─── Layout ─────────────────────────────────────────────── */
-    main { padding-top: 58px; position: relative; z-index: 1; }
-    .section {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: clamp(4rem, 9vw, 6.5rem) clamp(1.5rem, 5vw, 2rem);
-    }
-
-    /* ─── Eyebrow / headings ─────────────────────────────────── */
-    .eyebrow {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: var(--mono);
-      font-size: 11px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.9rem;
-      background: rgba(91,156,246,0.08);
-      border: 1px solid rgba(91,156,246,0.18);
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-    h2.section-title {
-      font-family: var(--sans);
-      font-size: clamp(1.7rem, 3.5vw, 2.3rem);
-      font-weight: 600;
-      color: var(--bright);
-      margin-bottom: 0.5rem;
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-    .section-sub {
-      color: var(--dim);
-      font-size: 14px;
-      margin-bottom: 2.5rem;
-      max-width: 500px;
-      line-height: 1.6;
-    }
-
-    /* ─── Hero ───────────────────────────────────────────────── */
-    #hero {
-      min-height: calc(100vh - 58px);
-      display: flex; flex-direction: column; justify-content: center;
-      padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
-      max-width: 1100px; margin: 0 auto;
-      position: relative;
-    }
-
-    /* biological background — signature element */
-    #bio-bg {
-      position: fixed; top: 0; right: 0; width: 54vw; height: 100vh;
-      pointer-events: none; z-index: 0;
-    }
-    #bio-bg canvas {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    }
-    @keyframes helixDrift { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
-    @keyframes coverageShimmer { 0%,100%{opacity:0.55} 50%{opacity:0.85} }
-    @keyframes basePulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
-
-    .hero-inner { position: relative; z-index: 1; max-width: 620px; }
-
-    .hero-status {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono);
-      font-size: 12px;
-      color: var(--dim);
-      margin-bottom: 1.8rem;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 6px 14px;
-      border-radius: 20px;
-    }
-    .hero-status .live-dot {
-      width: 6px; height: 6px; border-radius: 50%; background: var(--accent2);
-      animation: softpulse 2s infinite;
-    }
-
-    h1 {
-      font-size: clamp(2.6rem, 6vw, 4.4rem);
-      font-weight: 600;
-      color: var(--bright);
-      line-height: 1.08;
-      margin-bottom: 0.35rem;
-      letter-spacing: -0.03em;
-    }
-    .h1-sub {
-      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
-      font-weight: 300;
-      color: var(--accent);
-      letter-spacing: -0.01em;
-      margin-bottom: 1.5rem;
-      font-family: var(--mono);
-    }
-
-    .hero-desc {
-      font-size: 15px;
-      color: var(--body);
-      max-width: 520px;
-      margin-bottom: 2rem;
-      line-height: 1.75;
-    }
-    .hero-desc em { color: var(--accent2); font-style: normal; font-weight: 500; }
-
-    .hero-chips {
-      display: flex; flex-wrap: wrap; gap: 0.45rem;
-      margin-bottom: 2.2rem;
-    }
-    .chip {
-      font-size: 12px;
-      padding: 4px 12px;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      color: var(--dim);
-      background: var(--surface);
-      transition: all 0.18s;
-      cursor: default;
-    }
-    .chip:hover { border-color: var(--accent); color: var(--accent); }
-    .chip.hl { border-color: rgba(91,156,246,0.35); color: var(--accent); background: rgba(91,156,246,0.07); }
-
-    .hero-ctas { display: flex; flex-wrap: wrap; gap: 0.75rem; }
-    .hero-ctas .download-btn::before { content: '↓ '; }
-
-    .btn {
-      font-size: 13px;
-      font-weight: 500;
-      padding: 9px 20px;
-      border-radius: var(--r);
-      border: 1.5px solid var(--accent);
-      color: var(--accent);
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.18s;
-      display: inline-block;
-    }
-    .btn:hover { background: var(--accent); color: var(--bg); text-decoration: none; }
-    .btn.ghost { border-color: var(--border); color: var(--dim); }
-    .btn.ghost:hover { border-color: var(--dim); color: var(--body); background: transparent; }
-
-    /* ─── Divider ────────────────────────────────────────────── */
-    .divider { border: 0; height: 1rem; max-width: 880px; margin: 0 auto; }
-
-    /* ─── Research cards ─────────────────────────────────────── */
-    .research-grid { display: flex; flex-direction: column; gap: 12px; }
-
-    .rcard {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      overflow: hidden;
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .rcard:hover { border-color: var(--muted); }
-    .rcard.open { border-color: rgba(91,156,246,0.3); background: var(--surface2); }
-
-    .rcard-header {
-      display: flex; align-items: stretch;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    /* colored left-bar per category */
-    .rcard-bar { width: 4px; flex-shrink: 0; background: var(--muted); border-radius: 0; transition: background 0.2s; }
-    .rcard:hover .rcard-bar, .rcard.open .rcard-bar { background: var(--accent); }
-    .rcard-bar.green { background: var(--accent2); }
-    .rcard-bar.orange { background: var(--warm); }
-    .rcard-bar.purple { background: var(--purple); }
-    .rcard:hover .rcard-bar.green, .rcard.open .rcard-bar.green { background: var(--accent2); }
-    .rcard:hover .rcard-bar.orange, .rcard.open .rcard-bar.orange { background: var(--warm); }
-    .rcard:hover .rcard-bar.purple, .rcard.open .rcard-bar.purple { background: var(--purple); }
-
-    .rcard-top {
-      flex: 1; padding: 1.1rem 1.4rem;
-      display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-    }
-    .rcard-left { flex: 1; min-width: 0; }
-    .rcard-category {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.3rem;
-    }
-    .rcard-title {
-      font-size: 14.5px;
-      font-weight: 600;
-      color: var(--bright);
-      line-height: 1.35;
-    }
-    .rcard-org {
-      font-size: 12.5px;
-      color: var(--dim);
-      margin-top: 0.2rem;
-    }
-    .rcard-right {
-      display: flex; flex-direction: column; align-items: flex-end; gap: 0.4rem; flex-shrink: 0;
-    }
-    .rcard-date { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-    .rcard-chevron {
-      font-size: 18px; color: var(--muted);
-      transition: transform 0.25s, color 0.2s;
-      line-height: 1;
-    }
-    .rcard.open .rcard-chevron { transform: rotate(180deg); color: var(--accent); }
-
-    /* badge */
-    .badge {
-      font-size: 10px; font-family: var(--mono);
-      padding: 2px 8px; border-radius: 20px; white-space: nowrap;
-    }
-    .badge.active   { background: rgba(74,222,145,0.1); color: #4ade91; border: 1px solid rgba(74,222,145,0.22); }
-    .badge.intern   { background: rgba(251,146,60,0.1); color: var(--warm); border: 1px solid rgba(251,146,60,0.22); }
-    .badge.new      { background: rgba(167,139,250,0.12); color: var(--purple); border: 1px solid rgba(167,139,250,0.24); }
-
-    /* expanded body */
-    .rcard-body {
-      display: none;
-      padding: 0 1.4rem 1.4rem 1.75rem;
-      border-top: 1px solid var(--border);
-    }
-    .rcard.open .rcard-body { display: block; }
-
-    .rcard-desc {
-      font-size: 14px; color: var(--body);
-      line-height: 1.75; margin: 1rem 0 1.25rem; max-width: 660px;
-    }
-    .rcard-visual {
-      width: 100%; min-height: 150px;
-      border: 1px dashed var(--border);
-      border-radius: var(--r);
-      background: var(--bg);
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--mono); font-size: 11px; color: var(--muted);
-      margin-bottom: 1.1rem;
-    }
-
-    .media-quicklook {
-      min-height: 0; padding: 4px; overflow: hidden;
-      background: var(--bg); isolation: isolate;
-    }
-    .media-quicklook img, .media-quicklook video {
-      display: block; width: 100%; height: auto;
-      object-fit: contain; background: #000; position: relative; z-index: 1;
-    }
-
-    .complex-sv-quicklook {
-      padding: 6px; background: #fff; border-style: solid;
-    }
-    .complex-sv-quicklook a { display: block; width: 100%; }
-    .complex-sv-quicklook img { background: #fff; }
-
-    .rcard-tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1rem; }
-    .tool-chip {
-      font-family: var(--mono); font-size: 10.5px;
-      padding: 3px 8px; border: 1px solid var(--border);
-      border-radius: 4px; color: var(--muted); background: var(--bg);
-    }
-    .rcard-links { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .rcard-links a {
-      font-size: 12px; font-family: var(--mono);
-      color: var(--accent); display: flex; align-items: center; gap: 4px;
-      transition: color 0.15s;
-    }
-    .rcard-links a:hover { color: var(--bright); text-decoration: none; }
-    .rcard-links a::before { content: '↗ '; font-size: 9px; opacity: 0.6; }
-
-    /* ─── Category filter bar ────────────────────────────────── */
-    .filter-bar {
-      display: flex; flex-wrap: wrap; gap: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .fchip {
-      font-size: 12px; padding: 5px 14px;
-      border: 1px solid var(--border); border-radius: 20px;
-      color: var(--dim); background: var(--surface);
-      cursor: pointer; transition: all 0.18s;
-    }
-    .fchip:hover, .fchip.active { border-color: var(--accent); color: var(--accent); background: rgba(91,156,246,0.07); }
-
-    /* ─── Publications ───────────────────────────────────────── */
-    .pub-list { display: flex; flex-direction: column; gap: 1rem; }
-    .pub-filter-note { color: var(--muted); font-family: var(--mono); font-size: 11px; margin: -0.75rem 0 1.5rem; }
-    .pub-type {
-      display: inline-flex; align-items: center; width: fit-content;
-      font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
-      text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
-      margin-bottom: 0.55rem; border: 1px solid rgba(74,222,145,0.24);
-      color: var(--accent); background: rgba(74,222,145,0.08);
-    }
-    .pub-type.talk { color: var(--accent2); border-color: rgba(91,156,246,0.28); background: rgba(91,156,246,0.08); }
-    .pub-type.paper { color: var(--purple); border-color: rgba(167,139,250,0.28); background: rgba(167,139,250,0.08); }
-    .pub-type.editorial { color: var(--warm); border-color: rgba(251,146,60,0.28); background: rgba(251,146,60,0.08); }
-    .pub-item.is-hidden { display: none; }
-    .pub-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 1.2rem 1.5rem;
-      transition: border-color 0.2s;
-      display: flex; gap: 1.25rem; align-items: flex-start;
-    }
-    .pub-item:hover { border-color: var(--muted); }
-    .pub-year {
-      font-family: var(--mono); font-size: 11px; color: var(--muted);
-      padding-top: 3px; flex-shrink: 0; width: 34px; text-align: right;
-    }
-    .pub-content { flex: 1; }
-    .pub-venue {
-      font-family: var(--mono); font-size: 10px;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--accent); margin-bottom: 0.3rem;
-    }
-    .pub-title {
-      font-size: 14px; font-weight: 500;
-      color: var(--bright); margin-bottom: 0.3rem; line-height: 1.4;
-    }
-    .pub-authors { font-size: 12px; color: var(--dim); margin-bottom: 0.4rem; }
-    .pub-authors strong { color: var(--body); }
-    .pub-meta { font-family: var(--mono); font-size: 11px; color: var(--muted); }
-    .pub-award {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 10px; color: var(--warm); font-family: var(--mono);
-      background: rgba(251,146,60,0.08); border: 1px solid rgba(251,146,60,0.2);
-      padding: 2px 7px; border-radius: 4px; margin-top: 5px;
-    }
-
-    /* ─── Documents / awards ────────────────────────────────── */
-    .document-grid, .award-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
-    .document-card, .award-item {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 1.2rem 1.4rem;
-      transition: border-color 0.2s;
-    }
-    .document-card:hover, .award-item:hover { border-color: var(--muted); }
-    .document-type, .award-type {
-      font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em;
-      text-transform: uppercase; color: var(--accent); margin-bottom: 0.45rem;
-    }
-    .document-title, .award-title { color: var(--bright); font-size: 14px; font-weight: 600; line-height: 1.4; }
-    .document-meta, .award-meta { color: var(--muted); font-family: var(--mono); font-size: 11px; margin-top: 0.45rem; }
-    .document-link { display: inline-block; margin-top: 1rem; font-family: var(--mono); font-size: 12px; }
-    .document-link::before { content: '↓ '; }
-    .award-list { grid-template-columns: 1fr; }
-    .award-item { display: flex; gap: 1rem; align-items: flex-start; }
-    .award-year { color: var(--muted); font-family: var(--mono); font-size: 11px; flex-shrink: 0; padding-top: 2px; width: 34px; }
-    .award-content { flex: 1; }
-    .award-title { color: var(--warm); }
-    .award-meta { color: var(--dim); }
-    @media (max-width: 600px) { .document-grid { grid-template-columns: 1fr; } }
-
-    /* ─── About terminal ─────────────────────────────────────── */
-    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-    @media (max-width: 600px) { .about-grid { grid-template-columns: 1fr; } }
-
-    .terminal {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-lg); overflow: hidden; grid-column: span 2;
-    }
-    @media (max-width: 600px) { .terminal { grid-column: span 1; } }
-    .terminal-bar {
-      background: var(--surface2); padding: 8px 14px;
-      display: flex; align-items: center; gap: 6px;
-      border-bottom: 1px solid var(--border);
-    }
-    .td { width: 10px; height: 10px; border-radius: 50%; }
-    .td-r { background: #ff5f57; } .td-y { background: #febc2e; } .td-g { background: #28c840; }
-    .terminal-title { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-left: 6px; }
-    .terminal-body {
-      padding: 1.3rem 1.5rem;
-      font-family: var(--mono); font-size: 12.5px; line-height: 1.95;
-    }
-    .t-p { color: var(--accent2); } .t-cmd { color: var(--bright); }
-    .t-key { color: var(--accent); } .t-val { color: var(--body); }
-    .t-c { color: var(--muted); }
-    .cursor {
-      display: inline-block; width: 7px; height: 13px;
-      background: var(--accent2); vertical-align: middle;
-      animation: blink 1.1s step-end infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-
-    .stat-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r-lg); padding: 1.25rem 1.4rem;
-      transition: border-color 0.2s;
-    }
-    .stat-card:hover { border-color: var(--muted); }
-    .stat-num {
-      font-family: var(--mono); font-size: 2rem; font-weight: 600;
-      color: var(--bright); line-height: 1;
-      margin-bottom: 0.4rem;
-    }
-    .stat-num span { color: var(--accent); }
-    .stat-label { font-size: 12.5px; color: var(--dim); }
-
-    /* ─── Neural net SVG ─────────────────────────────────────── */
-    /* drawn with JS below */
-
-    /* ─── Footer ─────────────────────────────────────────────── */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2rem clamp(1.5rem, 5vw, 4rem);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-wrap: wrap; gap: 1rem; max-width: 1100px; margin: 0 auto;
-    }
-    .footer-left { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-    .footer-links { display: flex; gap: 1.5rem; list-style: none; }
-    .footer-links a { font-size: 13px; color: var(--muted); transition: color 0.2s; }
-    .footer-links a:hover { color: var(--accent); text-decoration: none; }
-
-    @media (max-width: 640px) {
-      .nav-links { gap: 1.1rem; }
-      .rcard-top { flex-direction: column; align-items: flex-start; }
-      .rcard-right { flex-direction: row; align-items: center; }
-    }
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bhargav Srinivasan</title>
+<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-<!-- biological background -->
-<div id="bio-bg" aria-hidden="true">
-  <svg id="bio-svg" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:0;left:0;width:100%;height:100%">
-    <defs>
-      <linearGradient id="fadeLeft" x1="0" y1="0" x2="1" y2="0">
-        <stop offset="0%" stop-color="#07090f" stop-opacity="1"/>
-        <stop offset="40%" stop-color="#07090f" stop-opacity="0"/>
-      </linearGradient>
-      <linearGradient id="fadeTop" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#07090f" stop-opacity="0.7"/>
-        <stop offset="20%" stop-color="#07090f" stop-opacity="0"/>
-        <stop offset="80%" stop-color="#07090f" stop-opacity="0"/>
-        <stop offset="100%" stop-color="#07090f" stop-opacity="0.8"/>
-      </linearGradient>
-    </defs>
-    <!-- drawn by JS below -->
-    <g id="helix-group" style="animation: helixDrift 8s ease-in-out infinite"></g>
-    <g id="coverage-group"></g>
-    <g id="chrom-group"></g>
-    <!-- fade overlays keep edges clean -->
-    <rect width="100%" height="100%" fill="url(#fadeLeft)"/>
-    <rect width="100%" height="100%" fill="url(#fadeTop)"/>
-  </svg>
-</div>
-
-<!-- ─── Nav ────────────────────────────────────────────────── -->
-<nav>
-  <div class="nav-logo">
-    <div class="nav-logo-dot"></div>
-    Bhargav Srinivasan
+<header class="masthead">
+  <img class="portrait" src="assets/img/profile.jpg" alt="Bhargav Srinivasan">
+  <div class="masthead-text">
+    <h1>Bhargav Srinivasan</h1>
+    <p class="subtitle">
+      Undergraduate, B.S. Computer Science and B.S. Biological Sciences<br>
+      University of Maryland, College Park &middot; Expected May 2027
+    </p>
+    <img class="umd-logo" src="assets/img/umd-wordmark.svg"
+         alt="University of Maryland" width="277" height="55">
   </div>
-  <ul class="nav-links">
-    <li><a href="#research">Research</a></li>
-    <li><a href="#publications">Publications</a></li>
-    <li><a href="#awards">Awards</a></li>
-    <li><a href="#documents">CV / Resume</a></li>
-    <li><a href="#about">About</a></li>
-    <li><a href="mailto:bds062@umd.edu">Contact</a></li>
-  </ul>
+</header>
+
+<p class="contact">
+  <a href="mailto:bds062@umd.edu">bds062@umd.edu</a> &middot;
+  <a href="https://github.com/bds062">GitHub</a> &middot;
+  <a href="https://linkedin.com/in/bhargavdsrinivasan">LinkedIn</a> &middot;
+  <a href="BhargavSrinivasanCV.pdf">CV (PDF)</a> &middot;
+  <a href="BhargavSrinivasanResume.pdf">Resume (PDF)</a>
+</p>
+
+<nav class="nav">
+  <a href="#about">About</a>
+  <a href="#research">Research</a>
+  <a href="projects/">Projects</a>
+  <a href="#awards">Awards</a>
+  <a href="#papers">Papers</a>
+  <a href="#talks">Talks</a>
+  <a href="#posters">Posters</a>
+  <a href="#software">Software</a>
 </nav>
 
-<main>
+<h2 id="about">About</h2>
 
-  <!-- ─── Hero ──────────────────────────────────────────────── -->
-  <section id="hero">
-    <div class="hero-inner">
+<p>
+  I am interested in machine learning methods and theory for genomics, focusing on modeling and
+  mechanistic interpretation of structural, epigenetic, and regulatory variation. My work spans
+  structural variant detection in cancer, nanopore raw signal analysis, behavioral detection in fish, copy number variation in
+  insect genomes, and host&ndash;pathogen evolutionary dynamics.
+</p>
 
-      <div class="hero-status">
-        <div class="live-dot"></div>
-        UMD College Park · B.S. CS + Biological Sciences · Expected May 2027
-      </div>
+<p>
+  I am part of the Gemstone Honors Program and the Computer Science and Entomology Departmental
+  Honors Programs at Maryland, where I hold a 3.8 GPA. I am look for PhD programs in
+  computational biology and machine learning. 
+</p>
 
-      <h1>Bhargav Srinivasan</h1>
-      <div class="h1-sub">deep learning × genomics</div>
+<h2 id="research">Research</h2>
 
-      <p class="hero-desc">
-        I build deep learning tools that read biological sequences the way transformers read language.
-        My work spans <em>copy number variation in insect genomes</em>,
-        <em>structural variant detection in cancer</em>, and
-        <em>host–pathogen evolutionary dynamics</em> — always with a pipeline running somewhere on an HPC cluster.
-      </p>
+<div class="entry">
+  <div class="entry-title">Raw Signal Analysis Methods</div>
+  <div class="entry-meta">
+    Student Research Assistant, Firtina Lab, University of Maryland &middot;
+    October 2025 &ndash; present
+  </div>
+  <p>
+    Building methods for nanopore sequencing raw signal analysis: methylation detection, error
+    correction, and assembly. This work includes RawMod, a modification-agnostic classifier that
+    detects DNA modifications without requiring a control sample. RawMod pileups raw signal from
+    up to 30 reads at a candidate site, refines each read against a reference k-mer lookup table,
+    and passes the pileup through a convolutional trunk feeding a transformer that attends across
+    reads to reach a consensus modification likelihood.
+  </p>
+  <figure class="entry-figure">
+    <img src="assets/rawmod/architecture.png"
+         alt="RawMod architecture: raw signal pileup, convolutional trunk, and cross-read transformer" loading="lazy">
+    <figcaption>RawMod architecture: signal pileup, per-read convolutional trunk, and cross-read transformer consensus.</figcaption>
+  </figure>
+  <p>
+    On held-out ONT and UMCES benchmarks, RawMod reached F1 scores of 0.58 and 0.40 &mdash; 1.1x
+    and 3.08x Dorado's, respectively &mdash; and generalized to four modification types withheld
+    during training at &ge;3.6x Dorado's F1, while Dorado misidentified the modification type on
+    every held-out call. RawMod won the Best Poster Award at HiTSeq, ISMB 2026.
+  </p>
+  <p class="note">
+    <a href="https://github.com/bds062/Nanopore-Modification">RawMod code</a> &middot;
+    <a href="assets/rawmod/ISMB_2026_poster.pdf">Poster (PDF)</a>
+  </p>
+</div>
 
-      <div class="hero-chips">
-        <span class="chip hl">Deep Learning for Genomics</span>
-        <span class="chip hl">Structural Variation</span>
-        <span class="chip hl">Copy Number Variation</span>
-        <span class="chip">WGS Pipelines</span>
-        <span class="chip">Transformer Models</span>
-        <span class="chip">Cancer Genomics</span>
-        <span class="chip">ODE Modeling</span>
-        <span class="chip">HPC / SLURM</span>
-      </div>
+<div class="entry">
+  <div class="entry-title">Fish Behavior Classification</div>
+  <div class="entry-meta">
+    Student Research Assistant and Mentor Liaison, Gemstone Program, University of Maryland
+    &middot; August 2023 &ndash; present
+  </div>
+  <p>
+    Developing a computer vision classification model to identify the social behaviors of
+    Lake Malawi cichlids. I lead a team of 11 students in the Gemstone Honors Program 
+    under the mentorship of Dr. Abhinav Shrivastava in collaboration with Dr. Scott Juntti. 
+  </p>
+  <figure class="entry-figure">
+    <video src="projects/cichlid-social-behavior/assets/segmentation_keypoints.mp4"
+           autoplay loop muted playsinline preload="metadata"></video>
+    <figcaption>Segmentation and keypoint tracking on tank footage.</figcaption>
+  </figure>
+  <p class="note">
+    <a href="projects/cichlid-social-behavior/">Project details</a> &middot;
+    <a href="https://github.com/jay11256/fsh-cluster">Code</a>
+  </p>
+</div>
 
-      <div class="hero-ctas">
-        <a class="btn" href="#research">View Research</a>
-        <a class="btn ghost download-btn" href="BhargavSrinivasanCV.pdf" download>CV</a>
-        <a class="btn ghost" href="https://github.com/bds062" target="_blank">GitHub</a>
-        <a class="btn ghost" href="https://linkedin.com/in/bhargavdsrinivasan" target="_blank">LinkedIn</a>
-        <a class="btn ghost" href="mailto:bds062@umd.edu">Email</a>
-      </div>
+<div class="entry">
+  <div class="entry-title">Complex SV Identification</div>
+  <div class="entry-meta">
+    Student Intern, Kolmogorov Lab, National Cancer Institute &middot; May 2026 &ndash; present
+  </div>
+  <p>
+    Developing a deep learning method to identify and localize complex structural
+    variation in cancer genomes. The tool combines copy-number segments and breakpoint
+    graphs from long read and short read callers to detect BFB, chromothripsis, ecDNA, 
+    and seismic amplification events.
+  </p>
+  <figure class="entry-figure">
+    <a href="projects/deep-learning-structural-variation/">
+      <img src="projects/deep-learning-structural-variation/assets/complex_sv_pipeline.png"
+           alt="Method Pipeline" loading="lazy">
+    </a>
+    <figcaption>Method Pipeline</figcaption>
+  </figure>
+  <p class="note">
+    <a href="projects/deep-learning-structural-variation/">Project details</a> &middot;
+    <a href="https://github.com/bds062/complex-SV">Code</a>
+  </p>
+</div>
 
-    </div>
-  </section>
+<div class="entry">
+  <div class="entry-title">Insect Genome Bioinformatics Pipeline</div>
+  <div class="entry-meta">
+    Computational Biology Research Assistant, Fritz Lab, University of Maryland &middot;
+    February 2024 &ndash; present
+  </div>
+  <p>
+    Analyzing the basis of Bt pesticide resistance and copy number variation in <em>Helicoverpa zea</em>.
+    This work includes analyzing WGS short read data, structural bioinformatics analysis, and 
+    benchmarking short read SV callers with the Molloy Lab.
+  </p>
+  <figure class="entry-figure">
+    <a href="projects/helicoverpa-cnv/">
+      <img src="projects/helicoverpa-cnv/assets/banner_home.jpg"
+           alt="Bt resistance CNV frequency over time, and a structural model of the toxin receptor complex" loading="lazy">
+    </a>
+    <figcaption>CNV frequency across sampled populations, and a structural model of the toxin&ndash;trypsin interface.</figcaption>
+  </figure>
+  <p class="note">
+    <a href="projects/helicoverpa-cnv/">Project details</a> &middot;
+    <a href="https://github.com/bds062">Code</a>
+  </p>
+</div>
 
-  <hr class="divider" />
+<div class="entry">
+  <div class="entry-title">Host&ndash;Pathogen Evolutionary Dynamics Model</div>
+  <div class="entry-meta">
+    Student Research Assistant, Bruns Lab, University of Maryland &middot;
+    January 2024 &ndash; present
+  </div>
+  <p>
+    Building ODE models to simulate host&ndash;pathogen coevolution and study temporal adaptation
+    and allelic variation, incorporating seasonal forcing and birth pulses.
+  </p>
+  <figure class="entry-figure">
+    <a href="projects/host-pathogen-coevolution/">
+      <img src="projects/host-pathogen-coevolution/assets/all_parameters_rasters.gif"
+           alt="Merged ESS raster comparison across parameter sets" loading="lazy">
+    </a>
+    <figcaption>Evolutionary Stable Strategy comparison across different species.</figcaption>
+  </figure>
+  <p class="note">
+    <a href="projects/host-pathogen-coevolution/">Project details</a> &middot;
+    <a href="https://github.com/bds062/Host-Pathogen-Evolutionary-Dynamics-Model">Code</a>
+  </p>
+</div>
 
-  <!-- ─── Research ──────────────────────────────────────────── -->
-  <section class="section" id="research">
-    <p class="eyebrow">Research & Experience</p>
-    <h2 class="section-title">What I've been building</h2>
-    <p class="section-sub">Click any card for details, tools, and links.</p>
+<div class="entry">
+  <div class="entry-title">Molecular Surveillance</div>
+  <div class="entry-meta">
+    Bioinformatics Intern, AstraZeneca, Vaccines &amp; Immune Therapies &middot;
+    May &ndash; August 2025
+  </div>
+  <p>
+    Engineered and deployed a bacterial genome-processing pipeline supporting vaccine R&amp;D
+    surveillance efforts, and developed an unsupervised learning approach to identify
+    non-typeable <em>Haemophilus influenzae</em> cell-type clusters.
+  </p>
+  <p class="note"><a href="projects/bacterial-genome-surveillance/">Project details</a></p>
+</div>
 
-    <div class="filter-bar" id="filterBar">
-      <span class="fchip active" data-cat="all">All</span>
-      <span class="fchip" data-cat="dl">Deep Learning</span>
-      <span class="fchip" data-cat="genomics">Genomics</span>
-      <span class="fchip" data-cat="math">Mathematical Biology</span>
-      <span class="fchip" data-cat="industry">Industry</span>
-    </div>
+<div class="entry">
+  <div class="entry-title">US Department of Agriculture &ndash; Agricultural Research Service</div>
+  <div class="entry-meta">
+    Biological Science Aid, Beltsville, MD &middot; April 2024 &ndash; January 2025
+  </div>
+  <p>
+    Applied plant breeding methods to generate improved strawberry cultivars emphasizing disease
+    resistance, and deployed computer vision models for real-time detection of diseased plants
+    and stray animals using autonomous robots.
+  </p>
+</div>
 
-    <div class="research-grid" id="researchGrid">
+<p><a href="projects/">All projects</a></p>
 
-      <!-- ── Kolmogorov Lab (new, DL + cancer) ─────────────── -->
-      <div class="rcard open" data-cats="dl genomics industry">
-        <div class="rcard-header">
-          <div class="rcard-bar purple"></div>
-          <div class="rcard-top">
-            <div class="rcard-left">
-              <div class="rcard-category">Research Intern · Kolmogorov Lab</div>
-              <div class="rcard-title">Deep Learning for Complex Structural Variation in Cancer Genomes</div>
-              <div class="rcard-org">Long-read WGS · somatic SV detection · cancer genomics</div>
-            </div>
-            <div class="rcard-right">
-              <span class="badge new">Summer 2025</span>
-              <span class="rcard-date">May 2025 – Present</span>
-              <span class="rcard-chevron">▾</span>
-            </div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <p class="rcard-desc">
-            Developing complex-SV, a long-read framework that combines Wakhan copy-number segments
-            and Severus breakpoint graphs to detect BFB, chromothripsis, ecDNA, and seismic
-            amplification. The method supports both semi-localized event calls and chromosome-level
-            multilabel screening, with genome-held-out evaluation across a 48-cell-line cohort.
-          </p>
-          <div class="rcard-visual media-quicklook complex-sv-quicklook" id="vis-kol">
-            <a href="projects/deep-learning-structural-variation/" aria-label="Open the complex-SV project spotlight">
-              <img src="projects/deep-learning-structural-variation/assets/complex_sv_pipeline.png" alt="End-to-end complex-SV method" loading="lazy">
-            </a>
-          </div>
-          <div class="rcard-tools">
-            <span class="tool-chip">Python</span>
-            <span class="tool-chip">PyTorch</span>
-            <span class="tool-chip">Long-read WGS</span>
-            <span class="tool-chip">Structural Variants</span>
-            <span class="tool-chip">Cancer Genomics</span>
-            <span class="tool-chip">SLURM / HPC</span>
-          </div>
-          <div class="rcard-links">
-            <a href="projects/deep-learning-structural-variation/">Project Spotlight</a>
-            <a href="https://github.com/bds062/complex-SV" target="_blank">Code (GitHub)</a>
-          </div>
-        </div>
-      </div>
+<h2 id="awards">Awards</h2>
 
-      <!-- ── CNV Tool ───────────────────────────────────────── -->
-      <div class="rcard open" data-cats="dl genomics">
-        <div class="rcard-header">
-          <div class="rcard-bar green"></div>
-          <div class="rcard-top">
-            <div class="rcard-left">
-              <div class="rcard-category">Computational Genomics · Fritz Lab, UMD</div>
-              <div class="rcard-title">CNV Identification in <em>Helicoverpa zea</em></div>
-              <div class="rcard-org">Bt pesticide resistance · 237 wild WGS samples</div>
-            </div>
-            <div class="rcard-right">
-              <span class="badge active">Active</span>
-              <span class="rcard-date">Feb 2024 – Present</span>
-              <span class="rcard-chevron">▾</span>
-            </div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <p class="rcard-desc">
-            Analyzing 237 whole-genome sequenced wild <em>H. zea</em> samples to understand how copy number
-            variation drives adaptive resistance to Bt pesticides — a major agricultural challenge.
-            I'm building a CNV identification tool specifically designed for archived short-read data from
-            non-model organisms, where reference genomes are messy and read depths are uneven.
-            The project gave me a deep appreciation for how noisy real-world genomic data is, and what it
-            takes to extract signal from it.
-            Presented at PAG 2026, winning 2nd Prize in the CSSA Poster Competition.
-          </p>
-          <div class="rcard-visual" id="vis-cnv">
-            <span>[ read depth × copy number visualization — add here ]</span>
-          </div>
-          <div class="rcard-tools">
-            <span class="tool-chip">Python</span>
-            <span class="tool-chip">Bash</span>
-            <span class="tool-chip">Rust</span>
-            <span class="tool-chip">Bowtie2</span>
-            <span class="tool-chip">Samtools</span>
-            <span class="tool-chip">VCFtools</span>
-            <span class="tool-chip">SLURM</span>
-          </div>
-          <div class="rcard-links">
-            <a href="projects/helicoverpa-cnv/">Project Spotlight</a>
-            <a href="#" onclick="return false;">Poster PDF</a>
-            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
-          </div>
-        </div>
-      </div>
+<ul>
+  <li>
+    <strong>Best Poster Award</strong>, HiTSeq, ISMB, July 2026 &mdash; RawMod: A Deep Learning
+    Approach to Modification Agnostic Classification in Nanopore Sequencing.
+  </li>
+  <li>
+    <strong>Best Poster Award</strong>, Entomological Society of Washington Student Showcase,
+    May 2026 &mdash; Correlations between Read Depth, Copy Number Variation, and Bt Resistance in
+    <em>Helicoverpa zea</em>.
+  </li>
+  <li>
+    <strong>2nd Prize, Crop Science Society of America Poster Competition</strong>, PAG33: Plant
+    and Animal Genome Conference, January 2026 &mdash; Correlations between Read Depth, Copy
+    Number Variation, and Bt Resistance in <em>Helicoverpa zea</em>.
+  </li>
+  <li>
+    <strong>Best Talk Award</strong>, University of Maryland Gemstone Library Awards, April 2025
+    &mdash; Investigating the Link between the Ora4 Gene and Social Behaviors in African Cichlids
+    through the Use of Computer Vision. Awarded $2,000 in research funding.
+  </li>
+  <li>
+    <strong>Honors College Research Grant, CS Professional Development Fund, GO Fund, and
+    Ernest N. Cory Undergraduate Scholarship</strong> &mdash; funds collectively totaling over
+    $5,000 in support of independent research and conference travel.
+  </li>
+</ul>
 
-      <!-- ── AstraZeneca ────────────────────────────────────── -->
-      <div class="rcard open" data-cats="genomics industry">
-        <div class="rcard-header">
-          <div class="rcard-bar orange"></div>
-          <div class="rcard-top">
-            <div class="rcard-left">
-              <div class="rcard-category">Bioinformatics Intern · AstraZeneca</div>
-              <div class="rcard-title">Bacterial Genome Surveillance Pipeline & Dashboard</div>
-              <div class="rcard-org">Early Vaccines & Immune Therapies · molecular surveillance · PowerBI</div>
-            </div>
-            <div class="rcard-right">
-              <span class="badge intern">Internship</span>
-              <span class="rcard-date">May – Aug 2025</span>
-              <span class="rcard-chevron">▾</span>
-            </div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <p class="rcard-desc">
-            Spent a summer building infrastructure for genomic surveillance at AstraZeneca's vaccine division.
-            I engineered a bacterial genome-processing pipeline for real-time strain tracking,
-            built a PowerBI dashboard that brought genomic insights to clinical and wet-lab teams without
-            requiring them to run a single script, and prototyped a structural surveillance system to
-            flag high-risk bacterial strains. It was a great lesson in making computational biology
-            accessible across an organization.
-          </p>
-          <div class="rcard-visual" id="vis-az">
-            <span>[ pipeline schematic or dashboard screenshot — add here ]</span>
-          </div>
-          <div class="rcard-tools">
-            <span class="tool-chip">Python</span>
-            <span class="tool-chip">PowerBI</span>
-            <span class="tool-chip">Bash</span>
-            <span class="tool-chip">Genome Assembly</span>
-            <span class="tool-chip">Structural Bioinformatics</span>
-          </div>
-          <div class="rcard-links">
-            <a href="projects/bacterial-genome-surveillance/">Project Spotlight</a>
-            <a href="#publications">ASM Microbe 2026 Abstract</a>
-          </div>
-        </div>
-      </div>
+<h2 id="papers">Papers</h2>
 
-      <!-- ── Host–Pathogen ODE ──────────────────────────────── -->
-      <div class="rcard open" data-cats="math">
-        <div class="rcard-header">
-          <div class="rcard-bar"></div>
-          <div class="rcard-top">
-            <div class="rcard-left">
-              <div class="rcard-category">Mathematical Biology · Bruns Lab, UMD</div>
-              <div class="rcard-title">Host–Pathogen Coevolution ODE Model</div>
-              <div class="rcard-org">Temporal adaptation, allelic variation & seasonal forcing</div>
-            </div>
-            <div class="rcard-right">
-              <span class="badge active">Active</span>
-              <span class="rcard-date">Jan 2024 – Present</span>
-              <span class="rcard-chevron">▾</span>
-            </div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <p class="rcard-desc">
-            Building a deterministic ODE system to model how hosts and pathogens coevolve over time —
-            incorporating allelic variation, seasonal forcing, and birth pulses that make real-world
-            infection dynamics so hard to predict. The model lets us ask "when should a pathogen strike?"
-            and produces testable predictions for lab and field experiments.
-            I was invited as the only undergraduate to present at the QEED Seminar, to an audience of
-            30+ graduate students and faculty.
-          </p>
-          <div class="rcard-visual media-quicklook" id="vis-ode">
-            <img src="projects/host-pathogen-coevolution/assets/all_parameters_rasters.gif" alt="Merged ESS raster comparison for Default, Dianthus pavonius, and Silene latifolia" loading="lazy">
-          </div>
-          <div class="rcard-tools">
-            <span class="tool-chip">Python</span>
-            <span class="tool-chip">NumPy</span>
-            <span class="tool-chip">SciPy</span>
-            <span class="tool-chip">Matplotlib</span>
-            <span class="tool-chip">ODE Solvers</span>
-          </div>
-          <div class="rcard-links">
-            <a href="projects/host-pathogen-coevolution/">Project Spotlight</a>
-            <a href="#publications">EEID NE 2025 Poster</a>
-            <a href="#publications">QEED Talk (Apr 2025)</a>
-          </div>
-        </div>
-      </div>
+<ul class="pubs">
+  <li>
+    <em>CRANE: Correcting Errors in Raw Nanopore Signals Using Hidden Markov Models.</em><br>
+    Simon Ambrozak, Ulysse McConnell, <strong>Bhargav Srinivasan</strong>, Burak Ozkan,
+    Ernest Zhang, Can Firtina.<br>
+    <span class="venue">arXiv, 2026.</span>
+  </li>
+  <li>
+    <em>Artificial Intelligence and Pain Management: Cautiously Optimistic.</em><br>
+    <strong>Bhargav Srinivasan</strong>, Archana Venkataraman, Srinivasa N. Raja.<br>
+    <span class="venue">Editorial, Pain Management, September 2024.</span>
+  </li>
+  <li>
+    <em>RawMod: A Deep Learning Approach to Modification Agnostic Classification in Nanopore
+    Sequencing.</em><br>
+    <strong>Bhargav Srinivasan</strong>, Simon Ambrozak, Can Firtina.<br>
+    <span class="venue">In preparation.</span>
+  </li>
+  <li>
+    <em>FSHFormer: A Computer Vision Model for Automated Cichlid Behavior Annotation.</em><br>
+    <strong>Bhargav Srinivasan</strong>, William Lamousin, Charles Phan, Jason Liu, Shubh Sharma,
+    Vijay Jayasuriya, Ariel Bazan, Cade McGeehan, Ofure Osunbor, Tahir Haroon, Pulkit Kumar,
+    Abhinav Shrivastava.<br>
+    <span class="venue">In preparation.</span>
+  </li>
+  <li>
+    <em>When Should a Pathogen Strike? Navigating the Landscape of Birth Pulses and Mating
+    Season.</em><br>
+    <strong>Bhargav Srinivasan</strong>, Sam Hulse, Emily Bruns.<br>
+    <span class="venue">In preparation.</span>
+  </li>
+</ul>
 
-      <!-- ── Cichlid CV ─────────────────────────────────────── -->
-      <div class="rcard open" data-cats="dl">
-        <div class="rcard-header">
-          <div class="rcard-bar"></div>
-          <div class="rcard-top">
-            <div class="rcard-left">
-              <div class="rcard-category">Computer Vision · Gemstone Team FSH, UMD</div>
-              <div class="rcard-title">Social Behavior Classification in Lake Malawi Cichlids</div>
-              <div class="rcard-org">Few-shot deep learning · PI: Abhinav Shrivastava</div>
-            </div>
-            <div class="rcard-right">
-              <span class="badge active">Active</span>
-              <span class="rcard-date">Aug 2023 – Present</span>
-              <span class="rcard-chevron">▾</span>
-            </div>
-          </div>
-        </div>
-        <div class="rcard-body">
-          <p class="rcard-desc">
-            Building a few-shot classification framework to identify the social behaviors of Lake Malawi
-            Cichlids from video — a genuinely hard recognition problem because the fish look similar
-            and behavior labels are expensive to annotate. I lead a team of 11 students and serve as
-            the main point of contact between our team and PI Abhinav Shrivastava.
-            It's taught me as much about research teamwork as it has about computer vision.
-          </p>
-          <div class="rcard-visual media-quicklook" id="vis-cichlid">
-            <video src="projects/cichlid-social-behavior/assets/segmentation_keypoints.mp4" autoplay loop muted playsinline preload="metadata"></video>
-          </div>
-          <div class="rcard-tools">
-            <span class="tool-chip">Python</span>
-            <span class="tool-chip">PyTorch</span>
-            <span class="tool-chip">Few-Shot Learning</span>
-            <span class="tool-chip">Computer Vision</span>
-            <span class="tool-chip">OpenCV</span>
-          </div>
-          <div class="rcard-links">
-            <a href="projects/cichlid-social-behavior/">Project Spotlight</a>
-            <a href="https://github.com/bds062" target="_blank">Code (GitHub)</a>
-          </div>
-        </div>
-      </div>
+<h2 id="talks">Talks</h2>
 
-    </div><!-- /research-grid -->
-  </section>
+<ul class="pubs">
+  <li>
+    <em>A Deep Learning Approach to Identifying Complex Structural Variation in the Genome.</em><br>
+    <span class="venue">Invited seminar talk, Cancer Data Science Laboratory, National Cancer
+    Institute, Bethesda, MD. July 2026.</span><br>
+    <a href="projects/deep-learning-structural-variation/assets/complex_sv_poster_2026.pdf">Related poster (PDF)</a>
+  </li>
+  <li>
+    <em>Unsupervised Learning for DNA Modification Profiles from Nanopore Sequencing Data.</em><br>
+    <span class="venue">Invited talk, Algorithmic Bioinformatics Seminar, University of Maryland,
+    College Park, MD. April 2026.</span>
+  </li>
+  <li>
+    <em>Developing a Molecular Surveillance Dashboard.</em><br>
+    <span class="venue">Invited talk, AstraZeneca Vaccines &amp; Immune Therapies Intern
+    Symposium, Gaithersburg, MD. August 2025.</span>
+  </li>
+  <li>
+    <em>Host Life History vs. Pathogen Optimization.</em><br>
+    <span class="venue">Invited talk, Quantitative Ecological &amp; Evolutionary Dynamics
+    Seminar, University of Maryland, College Park, MD. April 2025.</span>
+    <span class="note">Only undergraduate speaker in the seminar's history.</span>
+  </li>
+</ul>
 
-  <hr class="divider" />
+<h2 id="posters">Posters</h2>
 
-  <!-- ─── Publications ──────────────────────────────────────── -->
-  <section class="section" id="publications">
-    <p class="eyebrow">Publications & Presentations</p>
-    <h2 class="section-title">Select work</h2>
-    <p class="section-sub">Conferences, posters, talks, papers, and editorial work — 2024 to present.</p>
+<ul class="pubs">
+  <li>
+    <em>RawMod: A Deep Learning Approach to Modification Agnostic Classification in Nanopore
+    Sequencing.</em><br>
+    <span class="venue">ISMB: Intelligent Systems for Molecular Biology, Washington, D.C.
+    July 2026.</span>
+    <span class="note">HiTSeq Best Poster Award.</span><br>
+    <a href="assets/rawmod/ISMB_2026_poster.pdf">Poster (PDF)</a>
+  </li>
+  <li>
+    <em>A Deep Learning Approach to Identifying Complex Structural Variation in the Genome.</em><br>
+    <span class="venue">Poster presentation and flash talk, NCI Summer School on Algorithmic
+    Cancer Biology, Bethesda, MD. July 2026.</span><br>
+    <a href="projects/deep-learning-structural-variation/assets/complex_sv_poster_2026.pdf">Poster (PDF)</a>
+  </li>
+  <li>
+    <em>A Machine Learning Approach to Identify Unique Non-typeable <em>Haemophilus
+    influenzae</em> (NTHi) Clusters Using Lipooligosaccharide (LOS) Biosynthetic Genes.</em><br>
+    <span class="venue">ASM Microbe 2026, Washington, D.C. June 2026.</span>
+  </li>
+  <li>
+    <em>Correlations between Read Depth, Copy Number Variation, and Bt Resistance in
+    <em>Helicoverpa zea</em>.</em><br>
+    <span class="venue">Entomological Society of Washington Student Showcase, Washington, D.C.
+    May 2026.</span>
+    <span class="note">Best Poster Award.</span><br>
+    <a href="projects/helicoverpa-cnv/assets/FritzPosterFinal.pdf">Poster (PDF)</a>
+  </li>
+  <li>
+    <em>Correlations between Read Depth, Copy Number Variation, and Bt Resistance in
+    <em>Helicoverpa zea</em>.</em><br>
+    <span class="venue">PAG33: Plant and Animal Genome Conference, San Diego, CA.
+    January 2026.</span>
+    <span class="note">2nd Prize, Crop Science Society of America Poster Competition.</span><br>
+    <a href="projects/helicoverpa-cnv/assets/FritzPosterFinal.pdf">Poster (PDF)</a>
+  </li>
+  <li>
+    <em>When Should a Pathogen Strike: Navigating the Landscape of Birth Pulses and Mating
+    Season.</em><br>
+    <span class="venue">Ecology and Evolution of Infectious Diseases North-East Meeting,
+    University Park, PA. November 2025.</span>
+  </li>
+  <li>
+    <em>Investigating the Link between the Ora4 Gene and Social Behaviors in African Cichlids
+    through the Use of Computer Vision.</em><br>
+    <span class="venue">University of Maryland Gemstone Library Awards, College Park, MD.
+    April 2025.</span>
+    <span class="note">Best Talk Award.</span>
+  </li>
+</ul>
 
-    <div class="filter-bar" id="publicationFilterBar" aria-label="Filter publications by type">
-      <span class="fchip active" data-pub-type="all">All</span>
-      <span class="fchip" data-pub-type="poster">Posters</span>
-      <span class="fchip" data-pub-type="talk">Talks</span>
-      <span class="fchip" data-pub-type="paper">Papers</span>
-      <span class="fchip" data-pub-type="editorial">Editorials</span>
-    </div>
-    <p class="pub-filter-note" id="publicationFilterNote">Showing all publication types</p>
+<h2 id="software">Software</h2>
 
-    <div class="pub-list">
-      <div class="pub-item" data-pub-types="paper">
-        <div class="pub-year">2026</div>
-        <div class="pub-content">
-          <div class="pub-type paper">Paper</div>
-          <div class="pub-venue">arXiv</div>
-          <div class="pub-title">CRANE: Correcting Errors in Raw Nanopore Signals Using Hidden Markov Models</div>
-          <div class="pub-authors">Simon Ambrozak, Ulysse McConnell, <strong>Srinivasan B.</strong>, Burak Ozkan, Ernest Zhang, Can Firtina</div>
-          <div class="pub-meta">Preprint · 2026</div>
-        </div>
-      </div>
+<p class="note">Main contributor. All tools are actively under development.</p>
 
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">Jul 2026</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">ISMB: Intelligent Systems for Molecular Biology · Washington, D.C.</div>
-          <div class="pub-title">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Ambrozak S., Firtina C.</div>
-          <div class="pub-meta">Poster presentation · July 2026</div>
-          <div class="pub-award">🏆 HiTSeq Best Poster Award</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster talk">
-        <div class="pub-year">Jul 2026</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster + talk</div>
-          <div class="pub-venue">NCI Summer School on Algorithmic Cancer Biology · Bethesda, MD</div>
-          <div class="pub-title">A Deep Learning Approach to Identifying Complex Structural Variation in the Genome</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
-          <div class="pub-meta">Poster presentation &amp; flash talk · July 2026</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="talk">
-        <div class="pub-year">Jul 2026</div>
-        <div class="pub-content">
-          <div class="pub-type talk">Talk</div>
-          <div class="pub-venue">Cancer Data Science Laboratory · National Cancer Institute</div>
-          <div class="pub-title">A Deep Learning Approach to Identifying Complex Structural Variation in the Genome</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
-          <div class="pub-meta">Invited seminar talk · July 2026</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">Jun 2026</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">ASM Microbe 2026 · Washington, D.C.</div>
-          <div class="pub-title">A machine learning approach to identify unique NTHi clusters using LOS biosynthetic genes</div>
-          <div class="pub-authors">Gopalakrishnan V., Godfrey V., <strong>Srinivasan B.</strong>, et al.</div>
-          <div class="pub-meta">Non-presenting co-author · National conference · 4800+ attendees</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">May 2026</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">Plant & Animal Genome Conference · San Diego, CA</div>
-          <div class="pub-title">Correlations between Read Depth, Copy Number Variation, and Bt Resistance in <em>Helicoverpa zea</em></div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Fritz M.</div>
-          <div class="pub-meta">Poster · International conference · 3200+ attendees</div>
-          <div class="pub-award">🏆 2nd Prize — CSSA Poster Competition (only undergraduate)</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">May 2026</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">Entomological Society of Washington Student Showcase · Washington, D.C.</div>
-          <div class="pub-title">Correlations between Read Depth, Copy Number Variation, and Bt Resistance in <em>Helicoverpa zea</em></div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Fritz M.</div>
-          <div class="pub-meta">Poster presentation · May 2026</div>
-          <div class="pub-award">🏆 Best Poster Award</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="talk">
-        <div class="pub-year">Apr 2026</div>
-        <div class="pub-content">
-          <div class="pub-type talk">Talk</div>
-          <div class="pub-venue">Algorithmic Bioinformatics Seminar · University of Maryland</div>
-          <div class="pub-title">Unsupervised Learning for DNA Modification Profiles from Nanopore Sequencing Data</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong></div>
-          <div class="pub-meta">Invited talk · College Park, MD · April 2026</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">Nov 2025</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">EEID NE Meeting · University Park, PA</div>
-          <div class="pub-title">When should a pathogen strike: navigating the landscape of birth pulses and mating season</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
-          <div class="pub-meta">Poster · Regional conference · 75+ attendees</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="poster">
-        <div class="pub-year">Aug 2025</div>
-        <div class="pub-content">
-          <div class="pub-type poster">Poster</div>
-          <div class="pub-venue">AstraZeneca VIT Intern Symposium · Gaithersburg, MD</div>
-          <div class="pub-title">Developing a Molecular Surveillance Dashboard</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Mahool K.</div>
-          <div class="pub-meta">Poster presentation</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="talk">
-        <div class="pub-year">Apr 2025</div>
-        <div class="pub-content">
-          <div class="pub-type talk">Talk</div>
-          <div class="pub-venue">QEED Seminar · College Park, MD</div>
-          <div class="pub-title">Host Life History vs Pathogen Optimization</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Hulse S., Bruns E.</div>
-          <div class="pub-meta">Oral presentation · Only undergraduate speaker in seminar history · 30+ grad students & faculty</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="editorial">
-        <div class="pub-year">Sep 2024</div>
-        <div class="pub-content">
-          <div class="pub-type editorial">Editorial</div>
-          <div class="pub-venue">Pain Management Journal · Sep 2024</div>
-          <div class="pub-title">Artificial intelligence and pain management: cautiously optimistic</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Venkataraman A., Raja S.N.</div>
-          <div class="pub-meta">Editorial · <em>Pain Management</em></div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="paper">
-        <div class="pub-year">In prep</div>
-        <div class="pub-content">
-          <div class="pub-type paper">Paper</div>
-          <div class="pub-venue">In preparation</div>
-          <div class="pub-title">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Simon Ambrozak, Can Firtina</div>
-          <div class="pub-meta">Manuscript in preparation</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="paper">
-        <div class="pub-year">In prep</div>
-        <div class="pub-content">
-          <div class="pub-type paper">Paper</div>
-          <div class="pub-venue">In preparation</div>
-          <div class="pub-title">FSHFormer: A Computer Vision Model for Automated Cichlid Behavior Annotation</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, William Lamousin, Charles Phan, Jason Liu, Shubh Sharma, Vijay Jayasuriya, Ariel Bazan, Cade McGeehan, Ofure Osunbor, Tahir Haroon, Pulkit Kumar, Abhinav Shrivastava</div>
-          <div class="pub-meta">Manuscript in preparation</div>
-        </div>
-      </div>
-
-      <div class="pub-item" data-pub-types="paper">
-        <div class="pub-year">In prep</div>
-        <div class="pub-content">
-          <div class="pub-type paper">Paper</div>
-          <div class="pub-venue">In preparation</div>
-          <div class="pub-title">When Should a Pathogen Strike? Navigating the Landscape of Birth Pulses and Mating Season</div>
-          <div class="pub-authors"><strong>Srinivasan B.</strong>, Sam Hulse, Emily Bruns</div>
-          <div class="pub-meta">Manuscript in preparation</div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- ─── Awards ────────────────────────────────────────────── -->
-  <section class="section" id="awards">
-    <p class="eyebrow">Recognition</p>
-    <h2 class="section-title">Awards &amp; support</h2>
-    <p class="section-sub">Selected honors and funding supporting research, travel, and scientific communication.</p>
-
-    <div class="award-list">
-      <div class="award-item">
-        <div class="award-year">2026</div>
-        <div class="award-content"><div class="award-type">ISMB · HiTSeq</div><div class="award-title">Best Poster Award</div><div class="award-meta">RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing</div></div>
-      </div>
-      <div class="award-item">
-        <div class="award-year">2026</div>
-        <div class="award-content"><div class="award-type">Entomological Society of Washington</div><div class="award-title">Student Showcase Best Poster Award</div><div class="award-meta">Helicoverpa zea copy number variation and Bt resistance · May 2026</div></div>
-      </div>
-      <div class="award-item">
-        <div class="award-year">2025</div>
-        <div class="award-content"><div class="award-type">University of Maryland · Gemstone Library Awards</div><div class="award-title">Best Talk Award</div><div class="award-meta">Cichlid social behavior computer vision project · $2,000 in research funding</div></div>
-      </div>
-      <div class="award-item">
-        <div class="award-year">2024–26</div>
-        <div class="award-content"><div class="award-type">Research &amp; professional support</div><div class="award-title">Honors College Research Grant, CS Professional Development Fund, GO Fund, and Ernest N. Cory Undergraduate Scholarship</div><div class="award-meta">More than $5,000 collectively supporting independent research and conference travel</div></div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- ─── Documents ────────────────────────────────────────── -->
-  <section class="section" id="documents">
-    <p class="eyebrow">Documents</p>
-    <h2 class="section-title">CV &amp; resume</h2>
-    <p class="section-sub">Download the latest versions for a complete overview of research experience, presentations, publications, and awards.</p>
-
-    <div class="document-grid">
-      <div class="document-card">
-        <div class="document-type">Academic curriculum vitae</div>
-        <div class="document-title">Bhargav Srinivasan CV</div>
-        <div class="document-meta">Updated August 3, 2026 · PDF</div>
-        <a class="document-link" href="BhargavSrinivasanCV.pdf" download>Download CV</a>
-      </div>
-      <div class="document-card">
-        <div class="document-type">One-page resume</div>
-        <div class="document-title">Bhargav Srinivasan Resume</div>
-        <div class="document-meta">Updated August 3, 2026 · PDF</div>
-        <a class="document-link" href="BhargavSrinivasanResume.pdf" download>Download resume</a>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider" />
-
-  <!-- ─── About ─────────────────────────────────────────────── -->
-  <section class="section" id="about">
-    <p class="eyebrow">About</p>
-    <h2 class="section-title">A bit about me</h2>
-    <p class="section-sub">I'm applying to PhD programs in computational biology and genomics for Fall 2026.</p>
-
-    <div class="about-grid">
-
-      <div class="stat-card">
-        <div class="stat-num">3<span>.8</span></div>
-        <div class="stat-label">GPA · UMD College Park</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-num">6<span>+</span></div>
-        <div class="stat-label">Presentations & publications</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-num">237</div>
-        <div class="stat-label">WGS samples in active analysis</div>
-      </div>
-
-      <div class="stat-card">
-        <div class="stat-num">2<span>nd</span></div>
-        <div class="stat-label">CSSA Poster Prize at PAG 2026</div>
-      </div>
-
-      <div class="terminal">
-        <div class="terminal-bar">
-          <div class="td td-r"></div><div class="td td-y"></div><div class="td td-g"></div>
-          <span class="terminal-title">bhargav@umd — profile.json</span>
-        </div>
-        <div class="terminal-body">
-          <div><span class="t-p">❯</span> <span class="t-cmd">cat profile.json</span></div>
-          <br>
-          <div><span class="t-c">{</span></div>
-          <div>&nbsp;&nbsp;<span class="t-key">"name"</span>: <span class="t-val">"Bhargav Srinivasan"</span>,</div>
-          <div>&nbsp;&nbsp;<span class="t-key">"focus"</span>: <span class="t-val">"deep learning × computational genomics"</span>,</div>
-          <div>&nbsp;&nbsp;<span class="t-key">"degrees"</span>: <span class="t-val">["B.S. CS", "B.S. Biological Sciences"]</span>,</div>
-          <div>&nbsp;&nbsp;<span class="t-key">"programs"</span>: <span class="t-val">["Gemstone Honors", "Entomology Departmental Honors"]</span>,</div>
-          <div>&nbsp;&nbsp;<span class="t-key">"applying_for"</span>: <span class="t-val">"PhD in Computational Biology / Genomics"</span>,</div>
-          <div>&nbsp;&nbsp;<span class="t-key">"contact"</span>: <span class="t-val">"bds062@umd.edu"</span></div>
-          <div><span class="t-c">}</span></div>
-          <br>
-          <div><span class="t-p">❯</span> <span class="cursor"></span></div>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-</main>
+<ul>
+  <li>
+    <strong>RawMod</strong> &mdash; modification-agnostic classification of DNA modifications from
+    nanopore signal.
+    <a href="https://github.com/bds062/Nanopore-Modification">github.com/bds062/Nanopore-Modification</a>
+  </li>
+  <li>
+    <strong>FSHFormer</strong> &mdash; computer vision model for automated cichlid behavior
+    annotation.
+    <a href="https://github.com/jay11256/fsh-cluster">github.com/jay11256/fsh-cluster</a>
+  </li>
+  <li>
+    <strong>Complex SV Detection</strong> &mdash; deep learning detection of complex structural
+    variation in cancer genomes.
+    <a href="https://github.com/bds062/complex-SV">github.com/bds062/complex-SV</a>
+  </li>
+  <li>
+    <strong>Host&ndash;Pathogen Evolutionary Dynamics Model</strong> &mdash; ODE simulation of
+    host&ndash;pathogen coevolution.
+    <a href="https://github.com/bds062/Host-Pathogen-Evolutionary-Dynamics-Model">github.com/bds062/Host-Pathogen-Evolutionary-Dynamics-Model</a>
+  </li>
+</ul>
 
 <footer>
-  <div class="footer-left">© 2026 Bhargav Srinivasan · bds062@umd.edu</div>
-  <ul class="footer-links">
-    <li><a href="https://github.com/bds062" target="_blank">GitHub</a></li>
-    <li><a href="https://linkedin.com/in/bhargavdsrinivasan" target="_blank">LinkedIn</a></li>
-    <li><a href="mailto:bds062@umd.edu">Email</a></li>
-  </ul>
+  Bhargav Srinivasan &middot; <a href="mailto:bds062@umd.edu">bds062@umd.edu</a>
 </footer>
 
-<script>
-/* ── Biological background: DNA helix + neural net ── */
-(function() {
-  const NS = 'http://www.w3.org/2000/svg';
-  const svg = document.getElementById('bio-svg');
-  const helixG = document.getElementById('helix-group');
-  const covG = document.getElementById('coverage-group');
-  const chromG = document.getElementById('chrom-group');
-
-  const BASE_COLORS = { A:'#4ade91', T:'#5b9cf6', G:'#fb923c', C:'#a78bfa' };
-  const COMPLEMENT  = { A:'T', T:'A', G:'C', C:'G' };
-  const BASES = ['A','T','G','C'];
-
-  function el(tag, attrs) {
-    const e = document.createElementNS(NS, tag);
-    for (const [k,v] of Object.entries(attrs)) e.setAttribute(k, v);
-    return e;
-  }
-  function txt(str, attrs) {
-    const e = el('text', attrs);
-    e.textContent = str;
-    return e;
-  }
-
-  /* ── 1. DNA double helix ── */
-  function drawHelix(ox, oy, w, h) {
-    const rows = 32;
-    const rowH = h / rows;
-    const cx = ox + w * 0.5;
-    const amp = w * 0.38;
-
-    for (let i = 0; i < rows; i++) {
-      const t = i / (rows - 1);
-      const angle = t * Math.PI * 5.5;
-      const x1 = cx + Math.sin(angle) * amp;
-      const x2 = cx - Math.sin(angle) * amp;
-      const y  = oy + i * rowH;
-      const b1 = BASES[Math.floor(Math.abs(Math.sin(i * 17.3)) * 4)];
-      const b2 = COMPLEMENT[b1];
-      const depthAlpha = (0.5 + 0.5 * Math.sin(angle)) * 0.9;
-      const pairAlpha  = (0.25 + 0.3 * Math.abs(Math.cos(angle)));
-
-      // backbone strands (behind nodes)
-      if (i > 0) {
-        const prevAngle = (i-1) / (rows-1) * Math.PI * 5.5;
-        const px1 = cx + Math.sin(prevAngle) * amp;
-        const px2 = cx - Math.sin(prevAngle) * amp;
-        const py  = oy + (i-1) * rowH;
-        helixG.prepend(el('line', { x1: px1, y1: py, x2: x1, y2: y,
-          stroke: '#1a2e21', 'stroke-width': 1.8, opacity: 0.7 }));
-        helixG.prepend(el('line', { x1: px2, y1: py, x2: x2, y2: y,
-          stroke: '#1a2e21', 'stroke-width': 1.8, opacity: 0.7 }));
-      }
-
-      // hydrogen bond
-      helixG.appendChild(el('line', { x1, y1: y, x2, y2: y,
-        stroke: '#2e4d3a', 'stroke-width': 0.9, opacity: pairAlpha.toFixed(2) }));
-
-      // base nodes
-      helixG.appendChild(el('circle', { cx: x1, cy: y, r: 5,
-        fill: BASE_COLORS[b1], opacity: (depthAlpha * 0.9).toFixed(2) }));
-      helixG.appendChild(el('circle', { cx: x2, cy: y, r: 5,
-        fill: BASE_COLORS[b2], opacity: ((1 - depthAlpha) * 0.9).toFixed(2) }));
-
-      // base letter labels every 3rd
-      if (i % 3 === 0) {
-        helixG.appendChild(txt(b1, { x: x1, y: y + 0.5, 'text-anchor':'middle',
-          'dominant-baseline':'central', 'font-size': '7', 'font-family':'monospace',
-          fill: '#070f0b', opacity: (depthAlpha * 0.9).toFixed(2) }));
-        helixG.appendChild(txt(b2, { x: x2, y: y + 0.5, 'text-anchor':'middle',
-          'dominant-baseline':'central', 'font-size': '7', 'font-family':'monospace',
-          fill: '#070f0b', opacity: ((1 - depthAlpha) * 0.9).toFixed(2) }));
-      }
-    }
-  }
-
-  /* ── 2. Neural net particle field ── */
-  const canvas = document.createElement('canvas');
-  canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
-  document.getElementById('bio-bg').appendChild(canvas);
-  const ctx = canvas.getContext('2d');
-  let W, H, nodes, frame;
-
-  const COLORS = [[74,222,145],[91,156,246],[167,139,250]];
-
-  function buildNodes() {
-    nodes = [];
-    const count = Math.floor((W * H) / 16000);
-    for (let i = 0; i < count; i++) {
-      const c = COLORS[Math.floor(Math.random() * COLORS.length)];
-      nodes.push({ x: Math.random()*W, y: Math.random()*H,
-        vx: (Math.random()-0.5)*0.22, vy: (Math.random()-0.5)*0.22,
-        r: Math.random()*2+1, color: c, pulse: Math.random()*Math.PI*2 });
-    }
-  }
-
-  function drawParticles() {
-    ctx.clearRect(0, 0, W, H);
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i+1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-        const d = Math.sqrt(dx*dx + dy*dy);
-        if (d < 120) {
-          ctx.strokeStyle = `rgba(74,222,145,${(1 - d/120) * 0.09})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath(); ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y); ctx.stroke();
-        }
-      }
-    }
-    nodes.forEach(n => {
-      n.pulse += 0.016;
-      const p = Math.sin(n.pulse) * 0.3 + 0.7;
-      const [r,g,b] = n.color;
-      ctx.fillStyle = `rgba(${r},${g},${b},${p * 0.55})`;
-      ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI*2); ctx.fill();
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    });
-    frame = requestAnimationFrame(drawParticles);
-  }
-
-  /* ── Layout & render ── */
-  function render() {
-    const vW = svg.clientWidth || window.innerWidth * 0.54;
-    const vH = svg.clientHeight || window.innerHeight;
-    svg.setAttribute('viewBox', `0 0 ${vW} ${vH}`);
-
-    W = canvas.offsetWidth; H = canvas.offsetHeight;
-    canvas.width = W; canvas.height = H;
-
-    helixG.innerHTML = '';
-    covG.innerHTML = '';
-    chromG.innerHTML = '';
-
-    // helix in upper-right quadrant
-    drawHelix(vW * 0.32, vH * 0.04, vW * 0.56, vH * 0.88);
-
-    buildNodes();
-    svg.style.opacity = '0.5';
-  }
-
-  cancelAnimationFrame(frame);
-  render();
-  frame = requestAnimationFrame(drawParticles);
-  window.addEventListener('resize', () => {
-    cancelAnimationFrame(frame);
-    render();
-    frame = requestAnimationFrame(drawParticles);
-  });
-})();
-
-/* ── Accordion ── */
-document.querySelectorAll('.rcard').forEach(card => {
-  card.querySelector('.rcard-header').addEventListener('click', () => {
-    card.classList.toggle('open');
-  });
-});
-
-/* ── Filter bar ── */
-document.getElementById('filterBar').addEventListener('click', e => {
-  const chip = e.target.closest('.fchip');
-  if (!chip) return;
-  document.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
-  chip.classList.add('active');
-  const cat = chip.dataset.cat;
-  document.querySelectorAll('.rcard').forEach(card => {
-    const show = cat === 'all' || (card.dataset.cats || '').includes(cat);
-    card.style.display = show ? '' : 'none';
-    card.classList.toggle('open', show);
-  });
-});
-
-/* ── Publication type filter ── */
-const publicationFilterBar = document.getElementById('publicationFilterBar');
-const publicationFilterNote = document.getElementById('publicationFilterNote');
-if (publicationFilterBar) {
-  publicationFilterBar.addEventListener('click', e => {
-    const chip = e.target.closest('[data-pub-type]');
-    if (!chip) return;
-    publicationFilterBar.querySelectorAll('.fchip').forEach(c => c.classList.remove('active'));
-    chip.classList.add('active');
-    const type = chip.dataset.pubType;
-    const label = chip.textContent.trim();
-    document.querySelectorAll('.pub-item[data-pub-types]').forEach(item => {
-      const show = type === 'all' || item.dataset.pubTypes.split(' ').includes(type);
-      item.classList.toggle('is-hidden', !show);
-    });
-    publicationFilterNote.textContent = type === 'all'
-      ? 'Showing all publication types'
-      : 'Showing ' + label.toLowerCase() + ' only';
-  });
-}
-
-/* ── Nav active on scroll ── */
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
-const obs = new IntersectionObserver(entries => {
-  entries.forEach(e => {
-    if (e.isIntersecting) {
-      navLinks.forEach(a => a.style.color = '');
-      const active = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
-      if (active) active.style.color = 'var(--accent)';
-    }
-  });
-}, { threshold: 0.35 });
-sections.forEach(s => obs.observe(s));
-</script>
 </body>
 </html>
