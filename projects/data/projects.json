@@ -1,22 +1,76 @@
 [
   {
+    "slug": "rawmod",
+    "accent": "purple",
+    "category": "Raw Signal Analysis · Firtina Lab, UMD",
+    "title": "RawMod: A Deep Learning Approach to Modification-Agnostic Classification in Nanopore Sequencing",
+    "organization": "Nanopore raw signal · DNA modification detection · Anomaly detection",
+    "dates": "Oct 2025 – Present",
+    "status": "Active",
+    "tags": [
+      "Python",
+      "PyTorch",
+      "Nanopore Sequencing",
+      "Signal Processing"
+    ],
+    "summary": "A modification-agnostic classifier that detects DNA modifications directly from raw nanopore signal, without requiring a control sample.",
+    "overview": "RawMod piles up raw signal from up to 30 reads at a candidate site, refines each read against a reference k-mer lookup table, and passes the pileup through a convolutional trunk feeding a transformer that attends across reads to reach a consensus modification likelihood.",
+    "highlights": [
+      "Anomaly detection model architecture for modification agnostic classification.",
+      "Won the Best Poster Award at HiTSeq, ISMB 2026."
+    ],
+    "links": [
+      {
+        "label": "RawMod on GitHub",
+        "url": "https://github.com/bds062/Nanopore-Modification"
+      },
+      {
+        "label": "GitHub profile",
+        "url": "https://github.com/bds062"
+      }
+    ],
+    "media": [
+      {
+        "type": "image",
+        "label": "RawMod architecture: signal pileup, convolutional trunk, and cross-read transformer",
+        "src": "assets/architecture.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Learned embeddings across 12 organisms and 6 modification types (PCA and t-SNE). Similar embeddings can cluster cell types, haplotag reads, etc.",
+        "src": "assets/embeddings.png",
+        "layout": "wide"
+      },
+      {
+        "type": "image",
+        "label": "Zero-shot generalization to held-out modification types (leave-one-chemistry-out)",
+        "src": "assets/loco_generalization.png",
+        "layout": "wide"
+      },
+      {
+        "type": "pdf",
+        "label": "ISMB 2026 poster (PDF)",
+        "src": "assets/ISMB_2026_poster.pdf"
+      }
+    ]
+  },
+  {
     "slug": "deep-learning-structural-variation",
     "accent": "purple",
-    "category": "Research Intern · Kolmogorov Lab",
+    "category": "Somatic Variation Detection · Kolmogorov Lab",
     "title": "Deep Learning for Complex Structural Variation in Cancer Genomes",
-    "organization": "Long-read WGS · somatic SV detection · cancer genomics",
+    "organization": "Long-read WGS · Somatic variation · Cancer genomics",
     "dates": "May 2025 – Present",
     "status": "Current",
     "tags": [
       "Python",
       "PyTorch",
       "Long-read WGS",
-      "Structural Variants",
-      "Cancer Genomics",
       "SLURM / HPC"
     ],
-    "summary": "Developing complex-SV, a long-read framework that combines copy-number and breakpoint-graph representations to detect BFB, chromothripsis, ecDNA, and seismic amplification.",
-    "overview": "complex-SV starts from Wakhan copy-number segments and Severus structural-variant calls. It generates label-free candidate regions, embeds copy-number and breakpoint-graph evidence with pretrained encoders, and supports both semi-localized event detection and multilabel chromosome-level screening. Models are evaluated with genome-held-out splits across a 48-cell-line cohort.",
+    "summary": "Developing a ML framework that combines copy-number and breakpoint-graph representations to detect BFB, chromothripsis, ecDNA, and seismic amplification.",
+    "overview": "Our tool generates label-free candidate regions, embeds copy-number and breakpoint-graph evidence with pretrained encoders, and supports both semi-localized event detection and multilabel chromosome-level screening.",
     "highlights": [
       "Built a label-free, multi-evidence candidate generator for complex genomic regions.",
       "Pretrained copy-number and breakpoint-graph encoders and fused their representations for downstream classification.",
@@ -79,15 +133,20 @@
         "type": "pdf",
         "label": "complex-SV project poster · 2026",
         "src": "assets/complex_sv_poster_2026.pdf"
+      },
+      {
+        "type": "pdf",
+        "label": "Invited talk slides · Cancer Data Science Laboratory, NCI · 2026",
+        "src": "assets/Complex_SV_Talk_CDSL_2026.pdf"
       }
     ]
   },
   {
     "slug": "helicoverpa-cnv",
     "accent": "green",
-    "category": "Computational Genomics · Fritz Lab, UMD",
-    "title": "CNV Identification in Helicoverpa zea",
-    "organization": "Bt pesticide resistance · 237 wild WGS samples",
+    "category": "Short Read Copy Number Variation · Fritz Lab, UMD",
+    "title": "Pesticide Resistance in Helicoverpa zea",
+    "organization": "Structural bioinformatics · Copy number variation · Population genomics",
     "dates": "Feb 2024 – Present",
     "status": "Active",
     "tags": [
@@ -99,19 +158,18 @@
       "VCFtools",
       "SLURM"
     ],
-    "summary": "Analyzing 237 whole-genome sequenced wild H. zea samples to understand how copy-number variation contributes to adaptive resistance to Bt pesticides.",
-    "overview": "I am building a CNV identification tool for archived short-read data from a non-model organism, where reference genomes are messy and read depths are uneven. I benchmarked three CNV-calling approaches — a custom read-depth analysis, CNVCaller, and Delly2 — against a validated positive-control dataset, then used the strongest method to map a Bt-resistance-linked copy-number variant across 11 North American populations. I'm also building structural models of the duplicated trypsin gene product docking onto the Cry toxin receptor complex to reason about how the CNV could alter toxin processing.",
+    "summary": "Exploring causes of Bt pesticide resistance in H. zea. Then, exploring the applications of these insights in future genomic monitoring.",
+    "overview": "This work includes population genomics, understanding protein-protein interactions between resistance genes and the Bt toxin, and benchmarking short read CNV tools on insect trios.",
     "banner": "assets/banner.jpg",
     "highlights": [
-      "Benchmarked three CNV detection methods against a validated positive-control dataset; one (Delly2) failed to recover the known resistance allele.",
-      "Mapped the Bt-resistance CNV across 11 North American H. zea populations, with frequency rising from 0% in 2002 to 88% in 2019.",
+      "Benchmarking five CNV detection methods against H. zea trios that are internally sequenced.",
       "Built structural models of the duplicated trypsin protein docking onto the Cry toxin receptor complex to reason about the resistance mechanism.",
       "Presented at PAG 2026; recipient of 2nd Prize in the CSSA Poster Competition."
     ],
     "links": [
       {
-        "label": "GitHub profile",
-        "url": "https://github.com/bds062"
+        "label": "Fritz_Lab_Analysis on GitHub",
+        "url": "https://github.com/bds062/Fritz_Lab_Analysis"
       }
     ],
     "media": [
@@ -147,40 +205,11 @@
     ]
   },
   {
-    "slug": "bacterial-genome-surveillance",
-    "accent": "orange",
-    "category": "Bioinformatics Intern · AstraZeneca",
-    "title": "Bacterial Genome Surveillance Pipeline & Dashboard",
-    "organization": "Early Vaccines & Immune Therapies · molecular surveillance · PowerBI",
-    "dates": "May – Aug 2025",
-    "status": "Internship",
-    "tags": [
-      "Python",
-      "PowerBI",
-      "Bash",
-      "Genome Assembly",
-      "Structural Bioinformatics"
-    ],
-    "summary": "Built infrastructure for genomic surveillance, including a bacterial genome-processing pipeline, a PowerBI dashboard, and a prototype system for flagging high-risk strains.",
-    "overview": "This project translated genomic processing into tools that could be used by clinical and wet-lab teams without requiring them to run scripts. It was an exercise in making computational biology useful across an organization.",
-    "highlights": [
-      "Engineered a bacterial genome-processing pipeline for strain tracking.",
-      "Built a PowerBI dashboard for genomic insights.",
-      "Prototyped structural surveillance for high-risk bacterial strains."
-    ],
-    "links": [
-      {
-        "label": "GitHub profile",
-        "url": "https://github.com/bds062"
-      }
-    ]
-  },
-  {
     "slug": "host-pathogen-coevolution",
     "accent": "blue",
     "category": "Mathematical Biology · Bruns Lab, UMD",
     "title": "Host–Pathogen Coevolution ODE Model",
-    "organization": "Temporal adaptation · allelic variation · seasonal forcing",
+    "organization": "Temporal adaptation · Allelic variation · Seasonal forcing",
     "dates": "Jan 2024 – Present",
     "status": "Active",
     "tags": [
@@ -228,6 +257,11 @@
         "type": "pdf",
         "label": "Figure 4 · ESS across germination frames",
         "src": "assets/fig4.pdf"
+      },
+      {
+        "type": "pdf",
+        "label": "EEID NE 2025 poster (PDF)",
+        "src": "assets/SrinivasanEEID2025PosterFinal.pdf"
       }
     ]
   },
@@ -236,7 +270,7 @@
     "accent": "blue",
     "category": "Computer Vision · Gemstone Team FSH, UMD",
     "title": "Social Behavior Classification in Lake Malawi Cichlids",
-    "organization": "Few-shot deep learning · PI: Abhinav Shrivastava",
+    "organization": "Computer vision · Few-shot deep learning · Action localization · PI: Abhinav Shrivastava",
     "dates": "Aug 2023 – Present",
     "status": "Active",
     "tags": [
@@ -247,7 +281,7 @@
       "OpenCV"
     ],
     "summary": "A few-shot classification framework for identifying social behaviors of Lake Malawi cichlids from video, where fish look similar and behavior labels are expensive.",
-    "overview": "I lead a team of 11 students and serve as the main point of contact between our team and PI Abhinav Shrivastava. The project combines computer vision research with the practical challenges of building a collaborative research team.",
+    "overview": "I lead a team of 11 students and serve as the main point of contact between our team and PI Abhinav Shrivastava. This project is an interdisciplinary effort between labs working in Computer Vision and Genetics, inspiring my interests in multimodal work between the two fields.",
     "highlights": [
       "Develop few-shot behavior classification from video.",
       "Work with expensive, behavior-level annotations.",
@@ -265,6 +299,17 @@
         "type": "image",
         "label": "Tank footage mosaic — 20 clips composited together",
         "src": "assets/tank_footage_collage.gif"
+      },
+      {
+        "type": "image",
+        "label": "Our method outperforms SOTA models on detection performance (mAP by tIoU)",
+        "src": "assets/fishformer_results.png",
+        "layout": "wide"
+      },
+      {
+        "type": "pdf",
+        "label": "GEMS FSH Poster Day 2026 (PDF)",
+        "src": "assets/GEMS_FSH_2026_PosterDay.pdf"
       }
     ]
   }

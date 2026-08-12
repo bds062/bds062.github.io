@@ -43,15 +43,14 @@
 <h2 id="about">About</h2>
 
 <p>
-  I am interested in machine learning methods and theory for genomics, focusing on modeling and
-  mechanistic interpretation of structural, epigenetic, and regulatory variation. My work spans
+  I am interested in machine learning methods for genomics and computer vision. My work spans
   structural variant detection in cancer, nanopore raw signal analysis, behavioral detection in fish, copy number variation in
   insect genomes, and host&ndash;pathogen evolutionary dynamics.
 </p>
 
 <p>
   I am part of the Gemstone Honors Program and the Computer Science and Entomology Departmental
-  Honors Programs at Maryland, where I hold a 3.8 GPA. I am look for PhD programs in
+  Honors Programs at Maryland, where I hold a 3.8 GPA. I am looking for PhD programs in
   computational biology and machine learning. 
 </p>
 
@@ -66,43 +65,37 @@
   <p>
     Building methods for nanopore sequencing raw signal analysis: methylation detection, error
     correction, and assembly. This work includes RawMod, a modification-agnostic classifier that
-    detects DNA modifications without requiring a control sample. RawMod pileups raw signal from
-    up to 30 reads at a candidate site, refines each read against a reference k-mer lookup table,
-    and passes the pileup through a convolutional trunk feeding a transformer that attends across
-    reads to reach a consensus modification likelihood.
+    detects DNA modifications without requiring a control sample. RawMod won the Best Poster
+    Award at HiTSeq, ISMB 2026.
   </p>
   <figure class="entry-figure">
-    <img src="assets/rawmod/architecture.png"
-         alt="RawMod architecture: raw signal pileup, convolutional trunk, and cross-read transformer" loading="lazy">
+    <a href="projects/rawmod/">
+      <img src="projects/rawmod/assets/architecture.png"
+           alt="RawMod architecture: raw signal pileup, convolutional trunk, and cross-read transformer" loading="lazy">
+    </a>
     <figcaption>RawMod architecture: signal pileup, per-read convolutional trunk, and cross-read transformer consensus.</figcaption>
   </figure>
-  <p>
-    On held-out ONT and UMCES benchmarks, RawMod reached F1 scores of 0.58 and 0.40 &mdash; 1.1x
-    and 3.08x Dorado's, respectively &mdash; and generalized to four modification types withheld
-    during training at &ge;3.6x Dorado's F1, while Dorado misidentified the modification type on
-    every held-out call. RawMod won the Best Poster Award at HiTSeq, ISMB 2026.
-  </p>
   <p class="note">
-    <a href="https://github.com/bds062/Nanopore-Modification">RawMod code</a> &middot;
-    <a href="assets/rawmod/ISMB_2026_poster.pdf">Poster (PDF)</a>
+    <a href="projects/rawmod/">Project details</a> &middot;
+    <a href="https://github.com/bds062/Nanopore-Modification">Code</a>
   </p>
 </div>
 
 <div class="entry">
   <div class="entry-title">Fish Behavior Classification</div>
   <div class="entry-meta">
-    Student Research Assistant and Mentor Liaison, Gemstone Program, University of Maryland
+    Student Research Assistant, Gemstone Program, University of Maryland
     &middot; August 2023 &ndash; present
   </div>
   <p>
     Developing a computer vision classification model to identify the social behaviors of
-    Lake Malawi cichlids. I lead a team of 11 students in the Gemstone Honors Program 
+    cichlid fish. I lead a team of 11 students in the Gemstone Honors Program 
     under the mentorship of Dr. Abhinav Shrivastava in collaboration with Dr. Scott Juntti. 
   </p>
   <figure class="entry-figure">
     <video src="projects/cichlid-social-behavior/assets/segmentation_keypoints.mp4"
            autoplay loop muted playsinline preload="metadata"></video>
-    <figcaption>Segmentation and keypoint tracking on tank footage.</figcaption>
+    <figcaption>Segmentation and keypoint tracking on cichlid footage.</figcaption>
   </figure>
   <p class="note">
     <a href="projects/cichlid-social-behavior/">Project details</a> &middot;
@@ -113,13 +106,11 @@
 <div class="entry">
   <div class="entry-title">Complex SV Identification</div>
   <div class="entry-meta">
-    Student Intern, Kolmogorov Lab, National Cancer Institute &middot; May 2026 &ndash; present
+    Student Intern, Kolmogorov Lab, National Cancer Institute &middot; May 2026 &ndash; August 2026
   </div>
   <p>
     Developing a deep learning method to identify and localize complex structural
-    variation in cancer genomes. The tool combines copy-number segments and breakpoint
-    graphs from long read and short read callers to detect BFB, chromothripsis, ecDNA, 
-    and seismic amplification events.
+    variation in cancer genomes.
   </p>
   <figure class="entry-figure">
     <a href="projects/deep-learning-structural-variation/">
@@ -137,12 +128,12 @@
 <div class="entry">
   <div class="entry-title">Insect Genome Bioinformatics Pipeline</div>
   <div class="entry-meta">
-    Computational Biology Research Assistant, Fritz Lab, University of Maryland &middot;
+    Student Research Assistant, Fritz Lab, University of Maryland &middot;
     February 2024 &ndash; present
   </div>
   <p>
     Analyzing the basis of Bt pesticide resistance and copy number variation in <em>Helicoverpa zea</em>.
-    This work includes analyzing WGS short read data, structural bioinformatics analysis, and 
+    This work includes analyzing WGS short read data, structural bioinformatics, and 
     benchmarking short read SV callers with the Molloy Lab.
   </p>
   <figure class="entry-figure">
@@ -154,7 +145,7 @@
   </figure>
   <p class="note">
     <a href="projects/helicoverpa-cnv/">Project details</a> &middot;
-    <a href="https://github.com/bds062">Code</a>
+    <a href="https://github.com/bds062/Fritz_Lab_Analysis">Code</a>
   </p>
 </div>
 
@@ -165,8 +156,8 @@
     January 2024 &ndash; present
   </div>
   <p>
-    Building ODE models to simulate host&ndash;pathogen coevolution and study temporal adaptation
-    and allelic variation, incorporating seasonal forcing and birth pulses.
+    Building ODE models to study temporal adaptation
+    and allelic variation in host&ndash;pathogen coevolution.
   </p>
   <figure class="entry-figure">
     <a href="projects/host-pathogen-coevolution/">
@@ -192,7 +183,6 @@
     surveillance efforts, and developed an unsupervised learning approach to identify
     non-typeable <em>Haemophilus influenzae</em> cell-type clusters.
   </p>
-  <p class="note"><a href="projects/bacterial-genome-surveillance/">Project details</a></p>
 </div>
 
 <div class="entry">
@@ -259,7 +249,8 @@
     <span class="venue">In preparation.</span>
   </li>
   <li>
-    <em>FSHFormer: A Computer Vision Model for Automated Cichlid Behavior Annotation.</em><br>
+    <em>Automated Temporal Localization of Behavior in Cichlid Fish with Few-Shot Trajectory
+    Tokens.</em><br>
     <strong>Bhargav Srinivasan</strong>, William Lamousin, Charles Phan, Jason Liu, Shubh Sharma,
     Vijay Jayasuriya, Ariel Bazan, Cade McGeehan, Ofure Osunbor, Tahir Haroon, Pulkit Kumar,
     Abhinav Shrivastava.<br>
@@ -280,12 +271,18 @@
     <em>A Deep Learning Approach to Identifying Complex Structural Variation in the Genome.</em><br>
     <span class="venue">Invited seminar talk, Cancer Data Science Laboratory, National Cancer
     Institute, Bethesda, MD. July 2026.</span><br>
-    <a href="projects/deep-learning-structural-variation/assets/complex_sv_poster_2026.pdf">Related poster (PDF)</a>
+    <a href="projects/deep-learning-structural-variation/assets/Complex_SV_Talk_CDSL_2026.pdf">Talk slides (PDF)</a>
   </li>
   <li>
     <em>Unsupervised Learning for DNA Modification Profiles from Nanopore Sequencing Data.</em><br>
     <span class="venue">Invited talk, Algorithmic Bioinformatics Seminar, University of Maryland,
     College Park, MD. April 2026.</span>
+  </li>
+  <li>
+    <em>Investigating Color Vision's Role in African Cichlid Social Behaviors Using Few-Shot
+    Action Recognition.</em><br>
+    <span class="venue">Invited talk, Gemstone Do Good Showcase, College Park, MD.
+    November 2025.</span>
   </li>
   <li>
     <em>Developing a Molecular Surveillance Dashboard.</em><br>
@@ -298,6 +295,13 @@
     Seminar, University of Maryland, College Park, MD. April 2025.</span>
     <span class="note">Only undergraduate speaker in the seminar's history.</span>
   </li>
+  <li>
+    <em>Investigating the Link between the Ora4 Gene and Social Behaviors in African Cichlids
+    through the Use of Computer Vision.</em><br>
+    <span class="venue">Invited talk, University of Maryland Gemstone Library Awards,
+    College Park, MD. April 2025.</span>
+    <span class="note">Best Talk Award.</span>
+  </li>
 </ul>
 
 <h2 id="posters">Posters</h2>
@@ -309,7 +313,7 @@
     <span class="venue">ISMB: Intelligent Systems for Molecular Biology, Washington, D.C.
     July 2026.</span>
     <span class="note">HiTSeq Best Poster Award.</span><br>
-    <a href="assets/rawmod/ISMB_2026_poster.pdf">Poster (PDF)</a>
+    <a href="projects/rawmod/assets/ISMB_2026_poster.pdf">Poster (PDF)</a>
   </li>
   <li>
     <em>A Deep Learning Approach to Identifying Complex Structural Variation in the Genome.</em><br>
@@ -342,14 +346,8 @@
     <em>When Should a Pathogen Strike: Navigating the Landscape of Birth Pulses and Mating
     Season.</em><br>
     <span class="venue">Ecology and Evolution of Infectious Diseases North-East Meeting,
-    University Park, PA. November 2025.</span>
-  </li>
-  <li>
-    <em>Investigating the Link between the Ora4 Gene and Social Behaviors in African Cichlids
-    through the Use of Computer Vision.</em><br>
-    <span class="venue">University of Maryland Gemstone Library Awards, College Park, MD.
-    April 2025.</span>
-    <span class="note">Best Talk Award.</span>
+    University Park, PA. November 2025.</span><br>
+    <a href="projects/host-pathogen-coevolution/assets/SrinivasanEEID2025PosterFinal.pdf">Poster (PDF)</a>
   </li>
 </ul>
 
